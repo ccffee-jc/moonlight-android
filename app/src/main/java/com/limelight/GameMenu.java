@@ -263,7 +263,8 @@ public class GameMenu {
         List<MenuOption> options = new ArrayList<>();
 
         options.add(new MenuOption(getString(R.string.game_menu_disconnect), () -> game.disconnect()));
-
+        options.add(new MenuOption(getString(R.string.game_menu_switch_virtual_keyboard_model), true,
+                () -> game.showHidekeyBoardLayoutController()));
         options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard), true,
                 () -> game.toggleKeyboard()));
 
@@ -280,8 +281,6 @@ public class GameMenu {
 
         options.add(new MenuOption(getString(R.string.game_menu_switch_virtual_model), true,
                 () -> game.showHideVirtualController()));
-        options.add(new MenuOption(getString(R.string.game_menu_switch_virtual_keyboard_model), true,
-                () -> game.showHidekeyBoardLayoutController()));
 
         options.add(new MenuOption(getString(R.string.game_menu_switch_touch_sensitivity_model), true,
                 () -> game.switchTouchSensitivity()));
