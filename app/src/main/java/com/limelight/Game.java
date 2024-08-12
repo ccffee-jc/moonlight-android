@@ -634,7 +634,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     }
 
     private void initkeyBoardLayoutController(){
-        keyBoardLayoutController=new KeyBoardLayoutController(controllerHandler,(FrameLayout)rootView, this);
+        keyBoardLayoutController=new KeyBoardLayoutController(controllerHandler,(FrameLayout)rootView, this, this);
         keyBoardLayoutController.refreshLayout();
         keyBoardLayoutController.show();
     }
@@ -750,7 +750,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                 }
 
                 if(keyBoardLayoutController!=null){
-                    keyBoardLayoutController.hide();
+                    keyBoardLayoutController.phoneKey();
                 }
 
                 performanceOverlayView.setVisibility(View.GONE);
@@ -1256,7 +1256,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         }
 
         if(keyBoardLayoutController!=null){
-            keyBoardLayoutController.hide();
+            keyBoardLayoutController.phoneKey();
         }
 
         if (conn != null) {

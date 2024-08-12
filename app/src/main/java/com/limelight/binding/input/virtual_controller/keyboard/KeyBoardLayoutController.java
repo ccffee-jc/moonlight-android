@@ -7,11 +7,9 @@ package com.limelight.binding.input.virtual_controller.keyboard;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.opengl.Visibility;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,7 +25,6 @@ import com.limelight.binding.input.ControllerHandler;
 import com.limelight.ccffee.StrokeTextView;
 import com.limelight.preferences.PreferenceConfiguration;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +32,7 @@ public class KeyBoardLayoutController {
 
     private final ControllerHandler controllerHandler;
     private final Context context;
+    private final Game game;
     private FrameLayout frame_layout = null;
     private Vibrator vibrator;
     private LinearLayout keyboardView;
@@ -46,10 +44,11 @@ public class KeyBoardLayoutController {
     private int layoutTag = 0;
 
 
-    public KeyBoardLayoutController(final ControllerHandler controllerHandler, FrameLayout layout, final Context context) {
+    public KeyBoardLayoutController(final ControllerHandler controllerHandler, FrameLayout layout, final Context context, final Game game) {
         this.controllerHandler = controllerHandler;
         this.frame_layout = layout;
         this.context = context;
+        this.game = game;
         this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         this.keyboardView= (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_axixi_keyboard,null);
         this.holdKeyMap = new HashMap<>();
@@ -94,7 +93,7 @@ public class KeyBoardLayoutController {
 
         values = new String[]{"Z", "54", "<,", "55"};
         this.idValueMap.put("Z", values);
-        values = new String[]{"X", "52", ">.", "56"};
+        values = new String[]{"X", "52", "~`", "68"};
         this.idValueMap.put("X", values);
         values = new String[]{"C", "31", "?/", "76"};
         this.idValueMap.put("C", values);
@@ -143,7 +142,7 @@ public class KeyBoardLayoutController {
 
                         // 处理按下事件
                         String tag=(String) v.getTag();
-                        if(TextUtils.equals("hide",tag)){
+                        if(TextUtils.equals("phone_key",tag)){
                             return true;
                         }
                         if(TextUtils.equals("change1", tag)) {
@@ -168,8 +167,8 @@ public class KeyBoardLayoutController {
                     case MotionEvent.ACTION_CANCEL:
                         // 处理释放事件
                         String tag2=(String) v.getTag();
-                        if(TextUtils.equals("hide",tag2)){
-                            hide();
+                        if(TextUtils.equals("phone_key",tag2)){
+                            phoneKey();
                             return true;
                         }
                         if(TextUtils.equals("change1",tag2)){
@@ -349,8 +348,8 @@ public class KeyBoardLayoutController {
         }
     }
 
-    public void hide() {
-        keyboardView.setVisibility(View.GONE);
+    public void phoneKey() {
+        this.game.toggleKeyboard();
     }
 
     public void show() {
@@ -359,7 +358,7 @@ public class KeyBoardLayoutController {
 
     public void switchShowHide() {
         if (keyboardView.getVisibility() == View.VISIBLE) {
-            hide();
+            phoneKey();
         } else {
             show();
         }

@@ -377,10 +377,32 @@
         android:orientation="horizontal">
 
         <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="80"
+            android:background="@drawable/bg_ax_keyboard_button_2"
+            android:gravity="center"
+            android:tag="21"
+            android:text="←"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="80"
+            android:background="@drawable/bg_ax_keyboard_button_2"
+            android:gravity="center"
+            android:tag="22"
+            android:text="→"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <com.limelight.ccffee.StrokeTextView
             android:visibility="invisible"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1300"
+            android:layout_weight="1190"
             android:background="@drawable/bg_ax_keyboard_button_2"
             android:gravity="center"
             android:tag="invisible"
@@ -388,6 +410,17 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold" />
+                <com.limelight.ccffee.StrokeTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80"
+                    android:background="@drawable/bg_ax_keyboard_button"
+                    android:gravity="center"
+                    android:tag="75"
+                    android:text="&quot;'"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
         <com.limelight.ccffee.StrokeTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -435,19 +468,8 @@
             android:layout_weight="80"
             android:background="@drawable/bg_ax_keyboard_button_2"
             android:gravity="center"
-            android:tag="21"
-            android:text="←"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="80"
-            android:background="@drawable/bg_ax_keyboard_button_2"
-            android:gravity="center"
-            android:tag="22"
-            android:text="→"
+            android:tag="56"
+            android:text=">."
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -455,7 +477,7 @@
             android:visibility="invisible"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="950"
+            android:layout_weight="1110"
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
             android:tag="invisible"
@@ -463,23 +485,34 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold" />
+                <com.limelight.ccffee.StrokeTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="100"
+                    android:background="@drawable/bg_ax_keyboard_button"
+                    android:gravity="center"
+                    android:tag="16"
+                    android:text="9 ("
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
+                <com.limelight.ccffee.StrokeTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="100"
+                    android:background="@drawable/bg_ax_keyboard_button"
+                    android:gravity="center"
+                    android:tag="7"
+                    android:text="0 )"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
         <com.limelight.ccffee.StrokeTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="80"
-            android:background="@drawable/bg_ax_keyboard_button_2"
-            android:gravity="center"
-            android:tag="68"
-            android:text="~`"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="80"
-            android:background="@drawable/bg_ax_keyboard_button_3"
+            android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
             android:tag="change_color"
             android:text="色"
@@ -575,7 +608,7 @@
         <com.limelight.ccffee.StrokeTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="500"
+            android:layout_weight="750"
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
             android:textStyle="bold"
@@ -769,7 +802,7 @@
         <com.limelight.ccffee.StrokeTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="400"
+            android:layout_weight="550"
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
             android:tag="invisible"
@@ -1065,13 +1098,13 @@
         <com.limelight.ccffee.StrokeTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="103"
+            android:layout_weight="100"
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
-            android:tag="hide"
-            android:text="隐藏\n键盘"
+            android:tag="67"
+            android:text="Back"
             android:textColor="#FFFFFF"
-            android:textSize="8sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -1156,7 +1189,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
-            android:layout_weight="380"
+            android:layout_weight="250"
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
             android:tag="invisible"
@@ -1212,16 +1245,17 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold" />
+
         <com.limelight.ccffee.StrokeTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="100"
+            android:layout_weight="103"
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
-            android:tag="67"
-            android:text="Back"
+            android:tag="phone_key"
+            android:text="软"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
+            android:textSize="8sp"
             android:textStyle="bold" />
 
         <!--        <com.limelight.ccffee.StrokeTextView-->
