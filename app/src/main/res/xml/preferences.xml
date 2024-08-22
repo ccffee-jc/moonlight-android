@@ -383,6 +383,16 @@
             android:text="dp"
             android:title="虚拟全键盘高度" />
 
+        <com.limelight.preferences.SeekBarPreference
+            android:key="seekbar_keyboard_ccffee_key_hole_width"
+            seekbar:min="0"
+            seekbar:step="50"
+            android:max="1200"
+            android:defaultValue="0"
+            android:summary="调整虚拟全键盘中间空格长度"
+            android:text="dp"
+            android:title="虚拟全键盘中空长度" />
+
         <CheckBoxPreference
             android:key="checkbox_enable_analog_stick_new"
             android:title="自由摇杆"

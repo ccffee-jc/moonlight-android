@@ -448,6 +448,8 @@ public class Game extends Activity implements SurfaceHolder.Callback,
             }
         }
 
+        showHidekeyBoardLayoutController();
+
         decoderRenderer = new MediaCodecDecoderRenderer(
                 this,
                 prefConfig,
@@ -2972,7 +2974,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         }
     }
 
-    private void switchMouseModel(int which){
+    public void switchMouseModel(int which){
         disableMouseModel=false;
         //多点触控
         if(which==0){

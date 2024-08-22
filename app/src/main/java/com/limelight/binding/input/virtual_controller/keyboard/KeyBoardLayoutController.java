@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -157,6 +158,9 @@ public class KeyBoardLayoutController {
                         if(TextUtils.equals("invisible",tag)){
                             return true;
                         }
+                        if(TextUtils.equals("change_m",tag)){
+                            return true;
+                        }
                         KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, Integer.parseInt(tag));
                         keyEvent.setSource(0);
                         sendKeyEvent(keyEvent);
@@ -186,10 +190,15 @@ public class KeyBoardLayoutController {
                         if(TextUtils.equals("invisible",tag2)){
                             return true;
                         }
+                        if(TextUtils.equals("change_m",tag2)){
+                            handleChangeM();
+                            return true;
+                        }
                         int tag2int = Integer.parseInt(tag2);
                         if (handleHoldKey(tag2int)) {
                             return true;
                         }
+
                         KeyEvent keyUP = new KeyEvent(KeyEvent.ACTION_UP, tag2int);
                         keyUP.setSource(0);
                         sendKeyEvent(keyUP);
@@ -307,6 +316,33 @@ public class KeyBoardLayoutController {
         }
     }
 
+    private int switchMIndex = 0;
+    private void handleChangeM() {
+        switchMIndex++;
+        if (switchMIndex >= 3) {
+            switchMIndex = 0;
+        }
+
+        String[] show = {"多","普", "控"};
+
+        game.switchMouseModel(switchMIndex);
+
+
+        for (int i = 0; i < keyboardView.getChildCount(); i++){
+            LinearLayout keyboardRow = (LinearLayout) keyboardView.getChildAt(i);
+            for (int j = 0; j < keyboardRow.getChildCount(); j++){
+
+                StrokeTextView strokeTextView = (StrokeTextView) keyboardRow.getChildAt(j);
+                String tag2= (String) strokeTextView.getTag();
+
+                if (tag2.equals("change_m")) {
+                    strokeTextView.setText(show[switchMIndex]);
+                }
+
+            }
+        }
+    }
+
     private int colorIndex = 0;
 
     public void handleColorChange() {
@@ -314,7 +350,7 @@ public class KeyBoardLayoutController {
         if (colorIndex > 3) {
             colorIndex = 0;
         }
-        int[] colorList = new int[]{Color.WHITE, Color.BLACK, Color.parseColor("#BE3F3F"), Color.parseColor("#9BED93")};
+        int[] colorList = new int[]{Color.WHITE, Color.BLACK, Color.parseColor("#FF0000"), Color.parseColor("#9BED93")};
         int[] outlineColorList = new int[]{Color.BLACK, Color.WHITE, Color.parseColor("#E8F9FF"), Color.parseColor("#0E332D")};
 
         for (int i = 0; i < keyboardView.getChildCount(); i++){
@@ -375,6 +411,23 @@ public class KeyBoardLayoutController {
 //        params.topMargin = 15;
         keyboardView.setAlpha(PreferenceConfiguration.readPreferences(context).oscKeyboardOpacity/100f);
         frame_layout.addView(keyboardView,params);
+
+        for (int i = 0; i < keyboardView.getChildCount(); i++){
+            LinearLayout keyboardRow = (LinearLayout) keyboardView.getChildAt(i);
+            for (int j = 0; j < keyboardRow.getChildCount(); j++){
+
+                StrokeTextView strokeTextView = (StrokeTextView) keyboardRow.getChildAt(j);
+                String tag2= (String) strokeTextView.getTag();
+
+                if (tag2.equals("invisible")) {
+//                    strokeTextView.setVisibility(visibleTag ? View.VISIBLE : View.INVISIBLE);
+                    LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) strokeTextView.getLayoutParams();
+                    params1.weight = PreferenceConfiguration.readPreferences(context).oscKeyboardHoleWeight;
+                    strokeTextView.setLayoutParams(params1);
+                }
+
+            }
+        }
 
     }
 
