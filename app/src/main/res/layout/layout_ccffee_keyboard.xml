@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:padding="3dp"
+    android:background="#212121"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:orientation="horizontal">
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="61"
+            android:text="Tab"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="111"
+            android:text="ESC"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="105"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="113"
+            android:text="Ctrl"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="105"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="117"
+            android:text="Win"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="105"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="57"
+            android:text="Alt"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="21"
+            android:text="←"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="22"
+            android:text="→"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="103"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="19"
+            android:text="↑"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="20"
+            android:text="↓"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="change_m"
+            android:text="多"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="change_visible"
+            android:text="隐藏\n显示"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:orientation="horizontal">
+
+        <!-- 继续更新其他 com.limelight.ccffee.StrokeTextView 的 android:tag 值 -->
+
+        <!-- 以此类推，更新其他 com.limelight.ccffee.StrokeTextView 的 android:tag 值 -->
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="131"
+            android:text="F1"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="132"
+            android:text="F2"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="133"
+            android:text="F3"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="134"
+            android:text="F4"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="135"
+            android:text="F5"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="136"
+            android:text="F6"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="137"
+            android:text="F7"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="138"
+            android:text="F8"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="139"
+            android:text="F9"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="140"
+            android:text="F10"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="141"
+            android:text="F11"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="142"
+            android:text="F12"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:orientation="horizontal">
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="68"
+            android:text="~`"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="14"
+            android:text="7&amp;"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="15"
+            android:text="8*"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="16"
+            android:text="9("
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="7"
+            android:text="0)"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="73"
+            android:text="|\\"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="test"
+            android:text="占位"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="71"
+            android:text="{["
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="72"
+            android:text="}]"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:orientation="horizontal">
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="115"
+            android:text="中/英"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="11"
+            android:text="4$"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="12"
+            android:text="5%"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="13"
+            android:text="6^"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="75"
+            android:text="&quot;'"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="74"
+            android:text=":;"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="test"
+            android:text="占位"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="122"
+            android:text="Home"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="66"
+            android:text="Enter"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:orientation="horizontal">
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="59"
+            android:text="Shift"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="8"
+            android:text="1!"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="9"
+            android:text="2@"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="10"
+            android:text="3#"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="55"
+            android:text="&lt;,"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="56"
+            android:text=">."
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="76"
+            android:text="&#63;/"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="123"
+            android:text="End"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="phone_key"
+            android:text="软\n键盘"
+            android:textColor="#FFFFFF"
+            android:textSize="8sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:orientation="horizontal">
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="change_color"
+            android:text="颜色"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+
+        <!--        <com.limelight.ccffee.StrokeTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="100"-->
+<!--            android:background="@drawable/bg_ax_keyboard_button"-->
+<!--            android:gravity="center"-->
+<!--            android:tag="58"-->
+<!--            android:text="Alt"-->
+<!--            android:textSize="12sp" />-->
+
+<!--        <com.limelight.ccffee.StrokeTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="100"-->
+<!--            android:background="@drawable/bg_ax_keyboard_button"-->
+<!--            android:gravity="center"-->
+<!--            android:tag="114"-->
+<!--            android:text="Ctrl"-->
+<!--            android:textSize="12sp" />-->
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="69"
+            android:text="_-"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="70"
+            android:text="+="
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="67"
+            android:text="Back"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0dp"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="124"
+            android:text="Ins"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="112"
+            android:text="Del"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="test"
+            android:text="占位"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="92"
+            android:text="PgUp"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+
+        <com.limelight.ccffee.StrokeTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
+            android:background="@drawable/bg_ax_keyboard_button"
+            android:gravity="center"
+            android:tag="93"
+            android:text="PgDn"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+
+
+    </LinearLayout>
+</LinearLayout>

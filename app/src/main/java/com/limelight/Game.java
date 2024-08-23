@@ -10,6 +10,7 @@ import com.limelight.binding.input.capture.InputCaptureManager;
 import com.limelight.binding.input.capture.InputCaptureProvider;
 import com.limelight.binding.input.touch.AbsoluteTouchContext;
 import com.limelight.binding.input.touch.AbsoluteTouchSwitchContext;
+import com.limelight.binding.input.touch.DisplayTouchContext;
 import com.limelight.binding.input.touch.RelativeTouchContext;
 import com.limelight.binding.input.driver.UsbDriverService;
 import com.limelight.binding.input.evdev.EvdevListener;
@@ -34,6 +35,7 @@ import com.limelight.preferences.GlPreferences;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.ui.GameGestures;
 import com.limelight.ui.StreamView;
+import com.limelight.ui.StreamViewInteractionListener;
 import com.limelight.utils.Dialog;
 import com.limelight.utils.ServerHelper;
 import com.limelight.utils.ShortcutHelper;
@@ -132,10 +134,9 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     private KeyBoardLayoutController keyBoardLayoutController;
 
-    private PreferenceConfiguration prefConfig;
+    public PreferenceConfiguration prefConfig;
     private SharedPreferences tombstonePrefs;
-
-    private NvConnection conn;
+    public NvConnection conn;
     private SpinnerDialog spinner;
     private boolean displayedFailureDialog = false;
     private boolean connecting = false;
@@ -155,7 +156,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private boolean cursorVisible = false;
     private boolean waitingForAllModifiersUp = false;
     private int specialKeyCode = KeyEvent.KEYCODE_UNKNOWN;
-    private StreamView streamView;
+    public StreamView streamView;
     private long lastAbsTouchUpTime = 0;
     private long lastAbsTouchDownTime = 0;
     private float lastAbsTouchUpX, lastAbsTouchUpY;
@@ -267,6 +268,18 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         streamView.setOnGenericMotionListener(this);
         streamView.setOnKeyListener(this);
         streamView.setInputCallbacks(this);
+
+        streamView.setInteractionListener(new StreamViewInteractionListener() {
+            @Override
+            public void onScale(float scaleFactor) {
+                // 处理缩放事件
+            }
+
+            @Override
+            public void onMove(float dx, float dy) {
+                // 处理移动事件
+            }
+        });
 
         //光标是否显示
         cursorVisible=prefConfig.enableMouseLocalCursor;
@@ -2976,6 +2989,11 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     public void switchMouseModel(int which){
         disableMouseModel=false;
+        //屏幕缩放模式
+        if (which == -1) {
+            prefConfig.enableMultiTouchScreen=false;
+            prefConfig.touchscreenTrackpad=true;
+        }
         //多点触控
         if(which==0){
             prefConfig.enableMultiTouchScreen=true;
@@ -3010,9 +3028,13 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                 }
             }
             else {
-                touchContextMap[i] = new RelativeTouchContext(conn, i,
-                        REFERENCE_HORIZ_RES, REFERENCE_VERT_RES,
-                        streamView, prefConfig);
+                if (which == -1) {
+                    touchContextMap[i] = new DisplayTouchContext(i, REFERENCE_HORIZ_RES, REFERENCE_VERT_RES, streamView, prefConfig, streamView);
+                } else {
+                    touchContextMap[i] = new RelativeTouchContext(conn, i,
+                            REFERENCE_HORIZ_RES, REFERENCE_VERT_RES,
+                            streamView, prefConfig);
+                }
             }
         }
     }

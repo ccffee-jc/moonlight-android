@@ -7,6 +7,7 @@ import android.view.View;
 import com.limelight.nvstream.NvConnection;
 import com.limelight.nvstream.input.MouseButtonPacket;
 import com.limelight.preferences.PreferenceConfiguration;
+import com.limelight.ui.StreamView;
 
 public class RelativeTouchContext implements TouchContext {
     private int lastTouchX = 0;
@@ -27,7 +28,7 @@ public class RelativeTouchContext implements TouchContext {
     private final int actionIndex;
     private final int referenceWidth;
     private final int referenceHeight;
-    private final View targetView;
+    private final StreamView targetView;
     private final PreferenceConfiguration prefConfig;
     private final Handler handler;
 
@@ -99,7 +100,7 @@ public class RelativeTouchContext implements TouchContext {
         this.actionIndex = actionIndex;
         this.referenceWidth = referenceWidth;
         this.referenceHeight = referenceHeight;
-        this.targetView = view;
+        this.targetView = (StreamView) view;
         this.prefConfig = prefConfig;
         this.handler = new Handler(Looper.getMainLooper());
     }
@@ -279,13 +280,18 @@ public class RelativeTouchContext implements TouchContext {
                                 (short) targetView.getHeight());
                     }
                     else {
-                        conn.sendMouseMove((short) (deltaX*prefConfig.touchPadSensitivity*0.01f), (short) (deltaY*prefConfig.touchPadYSensitity*0.01f));
+                        short dx = (short) (deltaX*prefConfig.touchPadSensitivity*0.01f * targetView.scale);
+                        short dy = (short) (deltaY*prefConfig.touchPadYSensitity*0.01f * targetView.scale);
+                        targetView.setTranslation(targetView.mouseTakeScreenX() ? -dx : 0, targetView.mouseTakeScreenY() ? -dy : 0);
+                        targetView.setMousePos(-dx, -dy);
+                        short mouseX = (short)((float) targetView.getWidth() / 2 - targetView.mousePosX);
+                        short mouseY = (short)((float) targetView.getHeight() / 2 - targetView.mousePosY);
+                        conn.sendMousePosition(mouseX, mouseY, (short)targetView.getWidth(), (short)targetView.getHeight());
                     }
                 }
 
                 // If the scaling factor ended up rounding deltas to zero, wait until they are
-                // non-zero to update lastTouch that way devices that report small touch events often
-                // will work correctly
+                // non-zero to update lastTouch that way devices that report small touch events often                // will work correctly
                 if (deltaX != 0) {
                     lastTouchX = eventX;
                 }

@@ -51,7 +51,7 @@ public class KeyBoardLayoutController {
         this.context = context;
         this.game = game;
         this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        this.keyboardView= (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_axixi_keyboard,null);
+        this.keyboardView= (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_ccffee_keyboard,null);
         this.holdKeyMap = new HashMap<>();
         this.holdKeyViewMap = new HashMap<>();
         this.idValueMap = new HashMap<>();
@@ -161,6 +161,9 @@ public class KeyBoardLayoutController {
                         if(TextUtils.equals("change_m",tag)){
                             return true;
                         }
+                        if(TextUtils.equals("test",tag)){
+                            return true;
+                        }
                         KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, Integer.parseInt(tag));
                         keyEvent.setSource(0);
                         sendKeyEvent(keyEvent);
@@ -192,6 +195,10 @@ public class KeyBoardLayoutController {
                         }
                         if(TextUtils.equals("change_m",tag2)){
                             handleChangeM();
+                            return true;
+                        }
+                        if(TextUtils.equals("test",tag2)){
+                            test_cc();
                             return true;
                         }
                         int tag2int = Integer.parseInt(tag2);
@@ -316,11 +323,12 @@ public class KeyBoardLayoutController {
         }
     }
 
-    private int switchMIndex = 0;
+    private int switchMIndex = 2;
     private void handleChangeM() {
-        switchMIndex++;
-        if (switchMIndex >= 3) {
-            switchMIndex = 0;
+        if (switchMIndex == 2) {
+            switchMIndex = -1;
+        } else if (switchMIndex == -1) {
+            switchMIndex = 2;
         }
 
         String[] show = {"多","普", "控"};
@@ -331,16 +339,24 @@ public class KeyBoardLayoutController {
         for (int i = 0; i < keyboardView.getChildCount(); i++){
             LinearLayout keyboardRow = (LinearLayout) keyboardView.getChildAt(i);
             for (int j = 0; j < keyboardRow.getChildCount(); j++){
-
                 StrokeTextView strokeTextView = (StrokeTextView) keyboardRow.getChildAt(j);
                 String tag2= (String) strokeTextView.getTag();
 
                 if (tag2.equals("change_m")) {
-                    strokeTextView.setText(show[switchMIndex]);
+                    if (switchMIndex == -1) {
+                        strokeTextView.setText("屏");
+                    } else {
+                        strokeTextView.setText(show[switchMIndex]);
+                    }
                 }
 
             }
         }
+
+    }
+
+    private void test_cc() {
+//        game.conn.sendMousePosition((short)(game.streamView.getWidth() / 2), (short) 0, (short)game.streamView.getWidth(), (short)game.streamView.getHeight());
     }
 
     private int colorIndex = 0;
