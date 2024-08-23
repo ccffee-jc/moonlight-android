@@ -149,8 +149,6 @@ public class StreamView extends SurfaceView {
     public void setTranslation(float dx, float dy) {
         this.translationX += dx;
         this.translationY += dy;
-        setTranslationX(translationX);
-        setTranslationY(translationY);
         this.updatePosition();
         if (interactionListener != null) {
             interactionListener.onMove(dx, dy);

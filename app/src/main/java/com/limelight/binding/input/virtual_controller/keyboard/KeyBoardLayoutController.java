@@ -24,6 +24,7 @@ import com.limelight.Game;
 import com.limelight.R;
 import com.limelight.binding.input.ControllerHandler;
 import com.limelight.ccffee.StrokeTextView;
+import com.limelight.nvstream.input.MouseButtonPacket;
 import com.limelight.preferences.PreferenceConfiguration;
 
 import java.util.HashMap;
@@ -161,6 +162,12 @@ public class KeyBoardLayoutController {
                         if(TextUtils.equals("change_m",tag)){
                             return true;
                         }
+                        if(TextUtils.equals("left_mouse",tag)){
+                            return true;
+                        }
+                        if(TextUtils.equals("right_mouse",tag)){
+                            return true;
+                        }
                         if(TextUtils.equals("test",tag)){
                             return true;
                         }
@@ -195,6 +202,14 @@ public class KeyBoardLayoutController {
                         }
                         if(TextUtils.equals("change_m",tag2)){
                             handleChangeM();
+                            return true;
+                        }
+                        if(TextUtils.equals("left_mouse",tag2)){
+                            handleLeftMouse();
+                            return true;
+                        }
+                        if(TextUtils.equals("right_mouse",tag2)){
+                            handleRightMouse();
                             return true;
                         }
                         if(TextUtils.equals("test",tag2)){
@@ -357,6 +372,41 @@ public class KeyBoardLayoutController {
 
     private void test_cc() {
 //        game.conn.sendMousePosition((short)(game.streamView.getWidth() / 2), (short) 0, (short)game.streamView.getWidth(), (short)game.streamView.getHeight());
+    }
+
+    public Boolean leftMouseHoldState = false;
+
+    public void handleLeftMouse() {
+        // 处理鼠标左键按下逻辑
+        leftMouseHoldState = !leftMouseHoldState;
+
+        if (leftMouseHoldState) {
+            game.conn.sendMouseButtonDown(MouseButtonPacket.BUTTON_LEFT);
+        } else {
+            game.conn.sendMouseButtonUp(MouseButtonPacket.BUTTON_LEFT);
+        }
+
+        for (int i = 0; i < keyboardView.getChildCount(); i++){
+            LinearLayout keyboardRow = (LinearLayout) keyboardView.getChildAt(i);
+            for (int j = 0; j < keyboardRow.getChildCount(); j++){
+                StrokeTextView strokeTextView = (StrokeTextView) keyboardRow.getChildAt(j);
+                String tag2= (String) strokeTextView.getTag();
+
+                if (tag2.equals("left_mouse")) {
+                    if (leftMouseHoldState) {
+                        strokeTextView.setText("按下");
+                    } else {
+                        strokeTextView.setText("鼠标\n左键");
+                    }
+                }
+
+            }
+        }
+    }
+
+    public void handleRightMouse() {
+        game.conn.sendMouseButtonDown(MouseButtonPacket.BUTTON_RIGHT);
+        game.conn.sendMouseButtonUp(MouseButtonPacket.BUTTON_RIGHT);
     }
 
     private int colorIndex = 0;

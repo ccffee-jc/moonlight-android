@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import com.limelight.Game;
 import com.limelight.nvstream.NvConnection;
 import com.limelight.nvstream.input.MouseButtonPacket;
 import com.limelight.preferences.PreferenceConfiguration;
@@ -88,13 +89,15 @@ public class RelativeTouchContext implements TouchContext {
     private static final int TAP_MOVEMENT_THRESHOLD = 20;
     private static final int TAP_DISTANCE_THRESHOLD = 25;
     private static final int TAP_TIME_THRESHOLD = 250;
-    private static final int DRAG_TIME_THRESHOLD = 650;
+    private static final int DRAG_TIME_THRESHOLD = 250;
 
     private static final int SCROLL_SPEED_FACTOR = 5;
 
+    private Game game;
+
     public RelativeTouchContext(NvConnection conn, int actionIndex,
                                 int referenceWidth, int referenceHeight,
-                                View view, PreferenceConfiguration prefConfig)
+                                View view, PreferenceConfiguration prefConfig, Game game)
     {
         this.conn = conn;
         this.actionIndex = actionIndex;
@@ -103,6 +106,7 @@ public class RelativeTouchContext implements TouchContext {
         this.targetView = (StreamView) view;
         this.prefConfig = prefConfig;
         this.handler = new Handler(Looper.getMainLooper());
+        this.game = game;
     }
 
     @Override
@@ -162,7 +166,7 @@ public class RelativeTouchContext implements TouchContext {
             cancelled = confirmedDrag = confirmedMove = confirmedScroll = false;
             distanceMoved = 0;
 
-            if (actionIndex == 0) {
+            if (actionIndex == 0 && !game.keyBoardLayoutController.leftMouseHoldState) {
                 // Start the timer for engaging a drag
                 startDragTimer();
             }
@@ -175,6 +179,10 @@ public class RelativeTouchContext implements TouchContext {
     public void touchUpEvent(int eventX, int eventY, long eventTime)
     {
         if (cancelled) {
+            return;
+        }
+
+        if (game.keyBoardLayoutController.leftMouseHoldState) {
             return;
         }
 
@@ -267,7 +275,7 @@ public class RelativeTouchContext implements TouchContext {
                     deltaY = -deltaY;
                 }
 
-                if (pointerCount == 2) {
+                if (pointerCount == 2 && !game.keyBoardLayoutController.leftMouseHoldState) {
                     if (confirmedScroll) {
                         conn.sendMouseHighResScroll((short)(deltaY * SCROLL_SPEED_FACTOR));
                     }

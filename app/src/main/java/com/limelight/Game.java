@@ -132,7 +132,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     private KeyBoardController keyBoardController;
 
-    private KeyBoardLayoutController keyBoardLayoutController;
+    public KeyBoardLayoutController keyBoardLayoutController;
 
     public PreferenceConfiguration prefConfig;
     private SharedPreferences tombstonePrefs;
@@ -1500,6 +1500,10 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         return handleKeyDown(event) || super.onKeyDown(keyCode, event);
     }
 
+    private long lastVolueEventTime = 0;
+    private static final double SCROLL_SPEED_FACTOR = 1;
+    private static final int MAX_DELAT_TIME = 40;
+
     @Override
     public boolean handleKeyDown(KeyEvent event) {
         // Pass-through virtual navigation keys
@@ -1525,6 +1529,28 @@ public class Game extends Activity implements SurfaceHolder.Callback,
             // Always return true, otherwise the back press will be propagated
             // up to the parent and finish the activity.
             return true;
+        }
+
+        if (prefConfig.touchscreenTrackpad) {
+            // 触控板模式，捕获音量键
+
+            long dt = 0;
+            if (event.getDownTime() - event.getEventTime() != 0) {
+                dt = event.getEventTime() - lastVolueEventTime;
+                if (dt > MAX_DELAT_TIME) {
+                    dt = MAX_DELAT_TIME;
+                }
+                lastVolueEventTime = event.getEventTime();
+            }
+
+            if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                conn.sendMouseHighResScroll((short) (-dt * SCROLL_SPEED_FACTOR));
+                return true;
+            } else if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) {
+                conn.sendMouseHighResScroll((short) (dt * SCROLL_SPEED_FACTOR));
+                return true;
+            }
+
         }
 
         boolean handled = false;
@@ -3033,7 +3059,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                 } else {
                     touchContextMap[i] = new RelativeTouchContext(conn, i,
                             REFERENCE_HORIZ_RES, REFERENCE_VERT_RES,
-                            streamView, prefConfig);
+                            streamView, prefConfig, this);
                 }
             }
         }
