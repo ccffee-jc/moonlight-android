@@ -66,7 +66,8 @@ public class StreamView extends SurfaceView {
         }
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec  - dip2px(super.getContext(), PreferenceConfiguration.readPreferences(super.getContext()).oscKeyboardHeight));
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec  -
+                dip2px(super.getContext(), PreferenceConfiguration.readPreferences(super.getContext()).oscKeyboardHeight * 2 / 3));
 
 
         int measuredHeight, measuredWidth;
@@ -183,7 +184,7 @@ public class StreamView extends SurfaceView {
 
     public Boolean mouseTakeScreenY() {
         int viewHeight = getMeasuredHeight();
-        int keyHeight = dip2px(super.getContext(), PreferenceConfiguration.readPreferences(super.getContext()).oscKeyboardHeight);
+        int keyHeight = dip2px(super.getContext(), PreferenceConfiguration.readPreferences(super.getContext()).oscKeyboardHeight * 2 / 3);
 
         return !((float) viewHeight / 2 - Math.abs(this.mousePosY) < (float) screenHeight / 2 - keyHeight);
     }
@@ -200,7 +201,7 @@ public class StreamView extends SurfaceView {
             translationX = Math.max(translationX, -(float) (viewWidth - screenWidth) / 2);
         }
 
-        int keyHeight = dip2px(super.getContext(), PreferenceConfiguration.readPreferences(super.getContext()).oscKeyboardHeight);
+        int keyHeight = dip2px(super.getContext(), PreferenceConfiguration.readPreferences(super.getContext()).oscKeyboardHeight * 2 / 3);
         if (translationY >= 0) {
             translationY = Math.min(translationY, 0);
         } else {

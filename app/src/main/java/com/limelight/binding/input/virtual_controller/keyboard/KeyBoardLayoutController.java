@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -43,6 +42,9 @@ public class KeyBoardLayoutController {
     private Map<String, View> idViewMap;
     private Map<String, String[]> idValueMap;
 
+    // 小键盘
+    private StrokeTextView[] miniKeyboard = new StrokeTextView[21];
+
     private int layoutTag = 0;
 
 
@@ -57,74 +59,6 @@ public class KeyBoardLayoutController {
         this.holdKeyViewMap = new HashMap<>();
         this.idValueMap = new HashMap<>();
         this.idViewMap = new HashMap<>();
-
-        //初始化按键值
-        String[] values;
-        // 0-9
-        values = new String[]{"V", "50", "1!", "8"};
-        this.idValueMap.put("V", values);
-        values = new String[]{"B", "30", "2@", "9"};
-        this.idValueMap.put("B", values);
-        values = new String[]{"N", "42", "3#", "10"};
-        this.idValueMap.put("N", values);
-        values = new String[]{"M", "41", "0)", "7"};
-        this.idValueMap.put("M", values);
-        values = new String[]{"G", "35", "4$", "11"};
-        this.idValueMap.put("G", values);
-        values = new String[]{"H", "36", "5%", "12"};
-        this.idValueMap.put("H", values);
-        values = new String[]{"J", "38", "6^", "13"};
-        this.idValueMap.put("J", values);
-        values = new String[]{"Y", "53", "7&", "14"};
-        this.idValueMap.put("Y", values);
-        values = new String[]{"U", "49", "8*", "15"};
-        this.idValueMap.put("U", values);
-        values = new String[]{"I", "37", "9(", "16"};
-        this.idValueMap.put("I", values);
-
-        //符号
-        values = new String[]{"O", "43", "{[", "71"};
-        this.idValueMap.put("O", values);
-        values = new String[]{"P", "44", "}]", "72"};
-        this.idValueMap.put("P", values);
-
-        values = new String[]{"K", "39", ":;", "74"};
-        this.idValueMap.put("K", values);
-        values = new String[]{"L", "40", "\"'", "75"};
-        this.idValueMap.put("L", values);
-
-        values = new String[]{"Z", "54", "<,", "55"};
-        this.idValueMap.put("Z", values);
-        values = new String[]{"X", "52", "~`", "68"};
-        this.idValueMap.put("X", values);
-        values = new String[]{"C", "31", "?/", "76"};
-        this.idValueMap.put("C", values);
-        values = new String[]{"V", "50", "|\\", "73"};
-        this.idValueMap.put("V_l", values);
-
-        values = new String[]{"A", "29", "_-", "69"};
-        this.idValueMap.put("A", values);
-        values = new String[]{"S", "47", "+=", "70"};
-        this.idValueMap.put("S", values);
-
-        // F1-F5 F10-F12
-        values = new String[]{"Q", "45", "F1", "131"};
-        this.idValueMap.put("Q", values);
-        values = new String[]{"W", "51", "F2", "132"};
-        this.idValueMap.put("W", values);
-        values = new String[]{"E", "33", "F3", "133"};
-        this.idValueMap.put("E", values);
-        values = new String[]{"R", "46", "F4", "134"};
-        this.idValueMap.put("R", values);
-        values = new String[]{"T", "48", "F5", "135"};
-        this.idValueMap.put("T", values);
-
-        values = new String[]{"D", "32", "F10", "140"};
-        this.idValueMap.put("D", values);
-        values = new String[]{"F", "34", "F11", "141"};
-        this.idValueMap.put("F", values);
-        values = new String[]{"G", "35", "F12", "142"};
-        this.idValueMap.put("G_l", values);
 
 
         initKeyboard();
@@ -171,6 +105,10 @@ public class KeyBoardLayoutController {
                         if(TextUtils.equals("test",tag)){
                             return true;
                         }
+                        if(TextUtils.equals("mini_keyboard",tag)){
+                            return true;
+                        }
+
                         KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, Integer.parseInt(tag));
                         keyEvent.setSource(0);
                         sendKeyEvent(keyEvent);
@@ -216,6 +154,10 @@ public class KeyBoardLayoutController {
                             test_cc();
                             return true;
                         }
+                        if(TextUtils.equals("mini_keyboard",tag2)){
+                            miniKeyboardChange();
+                            return true;
+                        }
                         int tag2int = Integer.parseInt(tag2);
                         if (handleHoldKey(tag2int)) {
                             return true;
@@ -248,8 +190,16 @@ public class KeyBoardLayoutController {
                     String viewId = parts[parts.length - 1];
                     idViewMap.put(viewId, strokeTextView);
                 }
+
+                // 前三行的前七个按钮为小键盘
+                if (i < 3 && j < 7) {
+                    miniKeyboard[i * 7 + j] = strokeTextView;
+                }
             }
         }
+
+        // 初始隐藏
+        miniKeyboardChange();
     }
 
     public boolean isInt(String str) {
@@ -372,6 +322,13 @@ public class KeyBoardLayoutController {
 
     private void test_cc() {
 //        game.conn.sendMousePosition((short)(game.streamView.getWidth() / 2), (short) 0, (short)game.streamView.getWidth(), (short)game.streamView.getHeight());
+    }
+
+    private void miniKeyboardChange() {
+        for (int i = 0; i < miniKeyboard.length; i++) {
+            StrokeTextView view = miniKeyboard[i];
+            view.setVisibility(view.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+        }
     }
 
     public Boolean leftMouseHoldState = false;
