@@ -558,100 +558,11 @@
         <com.limelight.ccffee.StrokeTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="0dp"
-            android:layout_weight="100"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="111"
-            android:text="ESC"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="61"
-            android:text="Tab"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="105"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="57"
-            android:text="Alt"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="mini_keyboard"
-            android:text="小键盘"
-            android:textColor="#FFFFFF"
-            android:textSize="8sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="21"
-            android:text="←"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="22"
-            android:text="→"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="103"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="19"
-            android:text="↑"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="20"
-            android:text="↓"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="100"
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
             android:tag="left_mouse"
-            android:text="鼠标\n左键"
+            android:text="鼠标左键"
             android:textColor="#FFFFFF"
             android:textSize="8sp" />
 
@@ -662,31 +573,9 @@
             android:background="@drawable/bg_ax_keyboard_button"
             android:gravity="center"
             android:tag="right_mouse"
-            android:text="鼠标\n右键"
+            android:text="鼠标右键"
             android:textColor="#FFFFFF"
             android:textSize="8sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="105"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="113"
-            android:text="Ctrl"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-        <com.limelight.ccffee.StrokeTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:background="@drawable/bg_ax_keyboard_button"
-            android:gravity="center"
-            android:tag="59"
-            android:text="Shift"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
 
     </LinearLayout>
 

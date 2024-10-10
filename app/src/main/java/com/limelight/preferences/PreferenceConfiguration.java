@@ -147,6 +147,7 @@ public class PreferenceConfiguration {
     public int oscKeyboardOpacity;
     public int oscKeyboardHeight;
     public int oscKeyboardHoleWeight;
+    public int oscScreenXOffset_ccffee;
     public boolean stretchVideo, enableSops, playHostAudio, disableWarnings;
     public String language;
     public boolean smallIconMode, multiController, usbDriver, flipFaceButtons;
@@ -702,6 +703,8 @@ public class PreferenceConfiguration {
         config.oscKeyboardHeight=prefs.getInt("seekbar_keyboard_axi_height",200);
 
         config.oscKeyboardHoleWeight=prefs.getInt("seekbar_keyboard_ccffee_key_hole_width",0);
+
+        config.oscScreenXOffset_ccffee=prefs.getInt("seekbar_keyboard_ccffee_screen_x_width_offset",0);
 
         config.enableNewAnalogStick=prefs.getBoolean(CHECKBOX_CHECKBOX_ENABLE_ANALOG_STICK_NEW,false);
 

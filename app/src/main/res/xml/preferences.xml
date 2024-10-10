@@ -393,6 +393,16 @@
             android:text="dp"
             android:title="虚拟全键盘中空长度" />
 
+        <com.limelight.preferences.SeekBarPreference
+            android:key="seekbar_keyboard_ccffee_screen_x_width_offset"
+            seekbar:min="-1000"
+            seekbar:step="5"
+            android:max="1000"
+            android:defaultValue="0"
+            android:summary="屏幕左右空屏幕修正"
+            android:text="dp"
+            android:title="屏幕左右空屏幕修正" />
+
         <CheckBoxPreference
             android:key="checkbox_enable_analog_stick_new"
             android:title="自由摇杆"

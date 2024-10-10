@@ -196,9 +196,9 @@ public class StreamView extends SurfaceView {
 
         // 限制移动边界
         if (translationX > 0) {
-            translationX = Math.min(translationX, (float) (viewWidth - screenWidth) / 2);
+            translationX = Math.min(translationX, (float) (viewWidth - screenWidth) / 2 - PreferenceConfiguration.readPreferences(super.getContext()).oscScreenXOffset_ccffee);
         } else {
-            translationX = Math.max(translationX, -(float) (viewWidth - screenWidth) / 2);
+            translationX = Math.max(translationX, -(float) (viewWidth - screenWidth) / 2 + PreferenceConfiguration.readPreferences(super.getContext()).oscScreenXOffset_ccffee);
         }
 
         int keyHeight = dip2px(super.getContext(), PreferenceConfiguration.readPreferences(super.getContext()).oscKeyboardHeight * 2 / 3);
