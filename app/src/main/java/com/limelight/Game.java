@@ -72,6 +72,7 @@ import android.view.View;
 import android.view.View.OnGenericMotionListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -533,6 +534,33 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
         // The connection will be started when the surface gets created
         streamView.getHolder().addCallback(this);
+
+        setupKeyboardListener();
+    }
+
+    private int lastKeyboardHeight = 0;
+
+    // 在Activity中
+    private void setupKeyboardListener() {
+        final View rootView = getWindow().getDecorView().getRootView();
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootView.getWindowVisibleDisplayFrame(r);
+                int screenHeight = rootView.getHeight();
+                int keyboardHeight = screenHeight - r.bottom;
+
+                if (lastKeyboardHeight == keyboardHeight) {
+                    return;
+                }
+
+                lastKeyboardHeight = keyboardHeight;
+
+                // 更新StreamView的软键盘高度
+                streamView.setKeyboardHeight(keyboardHeight);
+            }
+        });
     }
 
     private void setPreferredOrientationForCurrentDisplay() {

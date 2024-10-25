@@ -7,6 +7,7 @@ import android.view.View;
 import com.limelight.nvstream.NvConnection;
 import com.limelight.nvstream.input.MouseButtonPacket;
 import com.limelight.preferences.PreferenceConfiguration;
+import com.limelight.ui.StreamView;
 
 public class RelativeTouchContext implements TouchContext {
     private int lastTouchX = 0;
@@ -22,6 +23,9 @@ public class RelativeTouchContext implements TouchContext {
     private double xFactor, yFactor;
     private int pointerCount;
     private int maxPointerCountInGesture;
+
+    private float curScale = 1;
+    private float scaleFactor = 0.005f;
 
     private final NvConnection conn;
     private final int actionIndex;
@@ -237,6 +241,8 @@ public class RelativeTouchContext implements TouchContext {
         confirmedScroll = (actionIndex == 0 && pointerCount == 2 && confirmedMove);
     }
 
+    private int lastScrollType = 0;
+
     @Override
     public boolean touchMoveEvent(int eventX, int eventY, long eventTime)
     {
@@ -268,19 +274,34 @@ public class RelativeTouchContext implements TouchContext {
 
                 if (pointerCount == 2) {
                     if (confirmedScroll) {
-                        conn.sendMouseHighResScroll((short)(deltaY * SCROLL_SPEED_FACTOR));
+                        if (lastScrollType != 2 && (lastScrollType == 1 || Math.abs(deltaY) > Math.abs(deltaX))) {
+                            lastScrollType = 1;
+                            conn.sendMouseHighResScroll((short)(deltaY * SCROLL_SPEED_FACTOR));
+                        } else {
+                            lastScrollType = 2;
+                            curScale = curScale + deltaX * scaleFactor;
+                            curScale = Math.max(1f, Math.min(3.0f, curScale));
+                            ((StreamView)targetView).setScaleFactor(curScale);
+                        }
                     }
                 } else {
+                    lastScrollType = 0;
                     if (prefConfig.absoluteMouseMode) {
                         conn.sendMouseMoveAsMousePosition(
-                                (short) deltaX,
-                                (short) deltaY,
+                                (short) (deltaX),
+                                (short) (deltaY),
                                 (short) targetView.getWidth(),
                                 (short) targetView.getHeight());
                     }
                     else {
-                        conn.sendMouseMove((short) deltaX, (short) deltaY);
+                        StreamView streamView = (StreamView) this.targetView;
+                        short mouseX = (short)((float) streamView.getWidth() / 2 - streamView.translateX);
+                        short mouseY = (short)((float) streamView.getHeight() / 2 - streamView.translateY);
+                        conn.sendMousePosition(mouseX, mouseY, (short)targetView.getWidth(), (short)targetView.getHeight());
+
                     }
+
+                    ((StreamView)targetView).setTranslationOffset(-deltaX * this.curScale, -deltaY * this.curScale);
                 }
 
                 // If the scaling factor ended up rounding deltas to zero, wait until they are
@@ -326,6 +347,10 @@ public class RelativeTouchContext implements TouchContext {
 
         if (pointerCount > maxPointerCountInGesture) {
             maxPointerCountInGesture = pointerCount;
+        }
+
+        if (pointerCount < 2) {
+            lastScrollType = 0;
         }
     }
 }
