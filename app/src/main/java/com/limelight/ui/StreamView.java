@@ -131,13 +131,19 @@ public class StreamView extends SurfaceView {
     public void setTranslationOffset(float deltaX, float deltaY) {
         this.translateX += deltaX;
         this.translateY += deltaY;
+
+        // 限制translateX的值在屏幕范围内
+        int width = this.getWidth();
+        int height = this.getHeight();
+        translateX = Math.max(-width / 2.0f, Math.min(width / 2.0f, translateX));
+        translateY = Math.max(-height / 2.0f, Math.min(height / 2.0f, translateY));
+
         applyTransformation();
     }
 
     // 添加设置软键盘高度的方法
     public void setKeyboardHeight(int height) {
         this.keyboardHeight = height;
-        System.out.println(keyboardHeight);
         applyTransformation();
     }
 
@@ -173,18 +179,15 @@ public class StreamView extends SurfaceView {
             float maxY = keyboardHeight / 2.0f + tempMaxY;
             float minY = keyboardHeight / 2.0f - tempMaxY;
 
-            System.out.println("111 CurY: " + targetTranslateY + "  maxY: " + maxY + "  minY: " + minY + "______" + keyboardHeight / 2.0f + "======" + tempMaxY);
             targetTranslateY = Math.min(Math.max(targetTranslateY, minY), maxY);
         } else {
             float tempMaxY = (viewHeight - valuableScreenHeight) / 2.0f;
             float maxY = keyboardHeight / 2.0f + tempMaxY;
             float minY = keyboardHeight / 2.0f - tempMaxY;
 
-            System.out.println("222 CurY: " + targetTranslateY + "  maxY: " + maxY + "  minY: " + minY + "______" + keyboardHeight / 2.0f + "======" + tempMaxY);
             targetTranslateY = Math.min(Math.max(targetTranslateY, minY), maxY);
         }
 
-        System.out.println("333 Y" + targetTranslateY);
 
         // 应用变换
         this.setTranslationX(targetTranslateX);
