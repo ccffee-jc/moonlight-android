@@ -96,10 +96,13 @@ public class RelativeTouchContext implements TouchContext {
 
     private static final int SCROLL_SPEED_FACTOR = 5;
 
+    private Game game;
+
     public RelativeTouchContext(NvConnection conn, int actionIndex,
-                                View view, PreferenceConfiguration prefConfig)
+                                View view, PreferenceConfiguration prefConfig, Game game)
     {
         this.conn = conn;
+        this.game = game;
         this.actionIndex = actionIndex;
         this.targetView = view;
         this.prefConfig = prefConfig;
@@ -163,7 +166,7 @@ public class RelativeTouchContext implements TouchContext {
             cancelled = confirmedDrag = confirmedMove = confirmedScroll = false;
             distanceMoved = 0;
 
-            if (actionIndex == 0) {
+            if (actionIndex == 0 && !this.game.leftMouseHoldState) {
                 // Start the timer for engaging a drag
                 startDragTimer();
             }
@@ -176,6 +179,10 @@ public class RelativeTouchContext implements TouchContext {
     public void touchUpEvent(int eventX, int eventY, long eventTime)
     {
         if (cancelled) {
+            return;
+        }
+
+        if (game.leftMouseHoldState) {
             return;
         }
 
@@ -270,9 +277,9 @@ public class RelativeTouchContext implements TouchContext {
                     deltaY = -deltaY;
                 }
 
-                if (pointerCount == 2) {
+                if (pointerCount == 2  && !game.leftMouseHoldState) {
                     if (confirmedScroll) {
-                        if (lastScrollType != 2 && (lastScrollType == 1 || Math.abs(deltaY) > Math.abs(deltaX))) {
+                        if (lastScrollType != 2 && (lastScrollType == 1 || Math.abs(deltaY) - Math.abs(deltaX) > -1)) {
                             lastScrollType = 1;
                             conn.sendMouseHighResScroll((short)(deltaY * SCROLL_SPEED_FACTOR));
                         } else {
