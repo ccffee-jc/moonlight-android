@@ -163,6 +163,10 @@ public class PreferenceConfiguration {
     private static final String REVERSE_RESOLUTION_PREF_STRING = "checkbox_reverse_resolution";
     private static final boolean DEFAULT_REVERSE_RESOLUTION = false;
 
+    // Portrait orientation toggle
+    private static final String PORTRAIT_MODE_PREF_STRING = "checkbox_force_portrait";
+    private static final boolean DEFAULT_PORTRAIT_MODE = false;
+
     // 画面位置常量
     private static final String SCREEN_POSITION_PREF_STRING = "list_screen_position";
     private static final String SCREEN_OFFSET_X_PREF_STRING = "seekbar_screen_offset_x";
@@ -233,6 +237,7 @@ public class PreferenceConfiguration {
     public boolean gamepadTouchpadAsMouse;
     public boolean gamepadMotionSensorsFallbackToDevice;
     public boolean reverseResolution;
+    public boolean forcePortrait;
 
     public ScreenPosition screenPosition;
     public int screenOffsetX;
@@ -651,6 +656,7 @@ public class PreferenceConfiguration {
         config.enableSimplifyPerfOverlay = false;
 
         config.reverseResolution = prefs.getBoolean(REVERSE_RESOLUTION_PREF_STRING, DEFAULT_REVERSE_RESOLUTION);
+        config.forcePortrait = prefs.getBoolean(PORTRAIT_MODE_PREF_STRING, DEFAULT_PORTRAIT_MODE);
 
         // 如果启用了分辨率反转，则交换宽度和高度
         if (config.reverseResolution) {
@@ -745,6 +751,7 @@ public class PreferenceConfiguration {
                     .putBoolean(ENABLE_HDR_PREF_STRING, enableHdr)
                     .putBoolean(ENABLE_PERF_OVERLAY_STRING, enablePerfOverlay)
                     .putBoolean(REVERSE_RESOLUTION_PREF_STRING, reverseResolution)
+                    .putBoolean(PORTRAIT_MODE_PREF_STRING, forcePortrait)
                     .putString(SCREEN_POSITION_PREF_STRING, positionString)
                     .putInt(SCREEN_OFFSET_X_PREF_STRING, screenOffsetX)
                     .putInt(SCREEN_OFFSET_Y_PREF_STRING, screenOffsetY)
@@ -766,6 +773,7 @@ public class PreferenceConfiguration {
         copy.enableHdr = this.enableHdr;
         copy.enablePerfOverlay = this.enablePerfOverlay;
         copy.reverseResolution = this.reverseResolution;
+        copy.forcePortrait = this.forcePortrait;
         copy.screenPosition = this.screenPosition;
         copy.screenOffsetX = this.screenOffsetX;
         copy.screenOffsetY = this.screenOffsetY;

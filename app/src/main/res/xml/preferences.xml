@@ -65,6 +65,11 @@
             android:title="反转分辨率"
             android:summary="交换宽度和高度值，用于特殊显示需求"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="checkbox_force_portrait"
+            android:title="竖屏显示"
+            android:summary="启用后串流画面以竖屏显示"
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="画面位置设置"
