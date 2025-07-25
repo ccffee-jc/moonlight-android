@@ -168,6 +168,8 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private boolean waitingForAllModifiersUp = false;
     private int specialKeyCode = KeyEvent.KEYCODE_UNKNOWN;
     private StreamView streamView;
+    private android.view.ScaleGestureDetector scaleDetector;
+    private float currentScale = 1.0f;
     private long lastAbsTouchUpTime = 0;
     private long lastAbsTouchDownTime = 0;
     private float lastAbsTouchUpX, lastAbsTouchUpY;
@@ -303,6 +305,18 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         streamView.setOnGenericMotionListener(this);
         streamView.setOnKeyListener(this);
         streamView.setInputCallbacks(this);
+        scaleDetector = new android.view.ScaleGestureDetector(this, new android.view.ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(android.view.ScaleGestureDetector detector) {
+                currentScale *= detector.getScaleFactor();
+                currentScale = Math.max(0.5f, Math.min(currentScale, 5.0f));
+                streamView.setPivotX(streamView.getWidth() / 2f);
+                streamView.setPivotY(streamView.getHeight() / 2f);
+                streamView.setScaleX(currentScale);
+                streamView.setScaleY(currentScale);
+                return true;
+            }
+        });
 
         // Listen for touch events on the background touch view to enable trackpad mode
         // to work on areas outside of the StreamView itself. We use a separate View
@@ -631,6 +645,11 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     private void setPreferredOrientationForCurrentDisplay() {
         Display display = getWindowManager().getDefaultDisplay();
+
+        if (prefConfig.forcePortrait) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT);
+            return;
+        }
 
         // 首先确定基于分辨率的所需方向
         int desiredOrientation = Configuration.ORIENTATION_UNDEFINED;
@@ -2400,6 +2419,9 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        if (scaleDetector != null) {
+            scaleDetector.onTouchEvent(event);
+        }
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             // Tell the OS not to buffer input events for us
             //

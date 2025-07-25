@@ -175,6 +175,9 @@
     <string name="title_checkbox_mouse_nav_buttons"> 启用前进后退鼠标键 </string>
     <string name="summary_checkbox_mouse_nav_buttons"> 在一些支持不佳的设备上启用此项可能会使其右键失效 </string>
 
+    <string name="title_checkbox_force_portrait">竖屏显示</string>
+    <string name="summary_checkbox_force_portrait">启用后串流画面将以竖屏显示</string>
+
     <string name="category_enhanced_touch_settings">多点触控设置</string>
     <string name="title_checkbox_enable_enhanced_touch">打开增强型触控</string>
     <string name="summary_checkbox_enable_enhanced_touch">关闭后可恢复经典模拟鼠标操作模式</string>
