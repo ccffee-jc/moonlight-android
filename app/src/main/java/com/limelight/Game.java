@@ -286,7 +286,18 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         // Enter landscape unless we're on a square screen
         setPreferredOrientationForCurrentDisplay();
 
-        if (prefConfig.stretchVideo || shouldIgnoreInsetsForResolution(prefConfig.width, prefConfig.height)) {
+        // 确定用于布局检查的分辨率
+        int layoutWidth, layoutHeight;
+        if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+            // 如果反转分辨率但不影响服务器，使用原始分辨率进行布局检查
+            layoutWidth = prefConfig.originalWidth;
+            layoutHeight = prefConfig.originalHeight;
+        } else {
+            layoutWidth = prefConfig.width;
+            layoutHeight = prefConfig.height;
+        }
+
+        if (prefConfig.stretchVideo || shouldIgnoreInsetsForResolution(layoutWidth, layoutHeight)) {
             // Allow the activity to layout under notches if the fill-screen option
             // was turned on by the user or it's a full-screen native resolution
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -539,7 +550,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         }
 
         StreamConfiguration config = new StreamConfiguration.Builder()
-                .setResolution(prefConfig.width, prefConfig.height)
+                .setResolution(prefConfig.originalWidth, prefConfig.originalHeight)
                 .setLaunchRefreshRate(prefConfig.fps)
                 .setRefreshRate(chosenFrameRate)  //将此处chosenFrameRate替换为5时， 视频刷新率降低到5，但直接观察远端桌面可知，触控刷新率并未下降，窗口仍可流畅拖动。
                 .setApp(app)
@@ -573,7 +584,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
         // Initialize touch contexts
         for (int i = 0; i < TOUCH_CONTEXT_LENGTH; i++) {
-            absoluteTouchContextMap[i] = new AbsoluteTouchContext(conn, i, streamView, );
+            absoluteTouchContextMap[i] = new AbsoluteTouchContext(conn, i, streamView);
             relativeTouchContextMap[i] = new RelativeTouchContext(conn, i,
                     streamView, prefConfig, this);
         }
@@ -659,7 +670,14 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private void setPreferredOrientationForCurrentDisplay() {
         Display display = getWindowManager().getDefaultDisplay();
 
-        // 首先确定基于分辨率的所需方向
+        // 如果反转分辨率但不影响服务器，允许任意方向，让内容按比例缩放
+        if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+            // 允许任意方向，内容会根据服务器分辨率按比例显示
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+            return;
+        }
+
+        // 正常的方向设置逻辑
         int desiredOrientation = Configuration.ORIENTATION_UNDEFINED;
         
         // 根据配置的宽高比确定横屏或竖屏
@@ -756,9 +774,20 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     @TargetApi(Build.VERSION_CODES.O)
     private PictureInPictureParams getPictureInPictureParams(boolean autoEnter) {
+        // 确定用于PiP长宽比的尺寸
+        int pipWidth, pipHeight;
+        if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+            // 如果反转分辨率但不影响服务器，使用原始分辨率
+            pipWidth = prefConfig.originalWidth;
+            pipHeight = prefConfig.originalHeight;
+        } else {
+            pipWidth = prefConfig.width;
+            pipHeight = prefConfig.height;
+        }
+        
         PictureInPictureParams.Builder builder =
                 new PictureInPictureParams.Builder()
-                        .setAspectRatio(new Rational(prefConfig.width, prefConfig.height))
+                        .setAspectRatio(new Rational(pipWidth, pipHeight))
                         .setSourceRectHint(new Rect(
                                 streamView.getLeft(), streamView.getTop(),
                                 streamView.getRight(), streamView.getBottom()));
@@ -1062,7 +1091,19 @@ public class Game extends Activity implements SurfaceHolder.Callback,
             display.getSize(screenSize);
 
             double screenAspectRatio = ((double)screenSize.y) / screenSize.x;
-            double streamAspectRatio = ((double)prefConfig.height) / prefConfig.width;
+            
+            // 确定用于长宽比计算的尺寸
+            int displayWidth, displayHeight;
+            if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+                // 如果反转分辨率但不影响服务器，使用原始分辨率计算长宽比
+                displayWidth = prefConfig.originalWidth;
+                displayHeight = prefConfig.originalHeight;
+            } else {
+                displayWidth = prefConfig.width;
+                displayHeight = prefConfig.height;
+            }
+            
+            double streamAspectRatio = ((double)displayHeight) / displayWidth;
             if (Math.abs(screenAspectRatio - streamAspectRatio) < 0.001) {
                 LimeLog.info("Stream has compatible aspect ratio with output display");
                 aspectRatioMatch = true;
@@ -1071,11 +1112,21 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
         if (prefConfig.stretchVideo || aspectRatioMatch) {
             // Set the surface to the size of the video
-            streamView.getHolder().setFixedSize(prefConfig.width, prefConfig.height);
+            // 使用与服务器匹配的分辨率设置表面尺寸
+            if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+                streamView.getHolder().setFixedSize(prefConfig.originalWidth, prefConfig.originalHeight);
+            } else {
+                streamView.getHolder().setFixedSize(prefConfig.width, prefConfig.height);
+            }
         }
         else {
             // Set the surface to scale based on the aspect ratio of the stream
-            streamView.setDesiredAspectRatio((double)prefConfig.width / (double)prefConfig.height);
+            // 使用与服务器匹配的分辨率计算长宽比
+            if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+                streamView.setDesiredAspectRatio((double)prefConfig.originalWidth / (double)prefConfig.originalHeight);
+            } else {
+                streamView.setDesiredAspectRatio((double)prefConfig.width / (double)prefConfig.height);
+            }
         }
 
         // Set the desired refresh rate that will get passed into setFrameRate() later

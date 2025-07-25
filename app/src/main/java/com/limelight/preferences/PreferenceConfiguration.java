@@ -162,6 +162,8 @@ public class PreferenceConfiguration {
 
     private static final String REVERSE_RESOLUTION_PREF_STRING = "checkbox_reverse_resolution";
     private static final boolean DEFAULT_REVERSE_RESOLUTION = false;
+    private static final String REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING = "checkbox_reverse_resolution_affect_server";
+    private static final boolean DEFAULT_REVERSE_RESOLUTION_AFFECT_SERVER = false;
 
     // 画面位置常量
     private static final String SCREEN_POSITION_PREF_STRING = "list_screen_position";
@@ -187,6 +189,7 @@ public class PreferenceConfiguration {
     }
 
     public int width, height, fps, resolutionScale;
+    public int originalWidth, originalHeight; // 存储未交换的原始分辨率，用于传给服务器
     public int bitrate;
     public int longPressflatRegionPixels; //Assigned to NativeTouchContext.INTIAL_ZONE_PIXELS
     public boolean syncTouchEventWithDisplay; // if true, view.requestUnbufferedDispatch(event) will be disabled
@@ -233,6 +236,7 @@ public class PreferenceConfiguration {
     public boolean gamepadTouchpadAsMouse;
     public boolean gamepadMotionSensorsFallbackToDevice;
     public boolean reverseResolution;
+    public boolean reverseResolutionAffectServer;
 
     public ScreenPosition screenPosition;
     public int screenOffsetX;
@@ -543,6 +547,10 @@ public class PreferenceConfiguration {
             config.height = PreferenceConfiguration.getHeightFromResolutionString(resStr);
         }
 
+        // 保存原始分辨率（用于传给服务器）
+        config.originalWidth = config.width;
+        config.originalHeight = config.height;
+
         // 处理新旧数据类型兼容
         Object fpsValue = prefs.getAll().get(FPS_PREF_STRING);
         if (fpsValue instanceof String) {
@@ -651,12 +659,20 @@ public class PreferenceConfiguration {
         config.enableSimplifyPerfOverlay = false;
 
         config.reverseResolution = prefs.getBoolean(REVERSE_RESOLUTION_PREF_STRING, DEFAULT_REVERSE_RESOLUTION);
+        config.reverseResolutionAffectServer = prefs.getBoolean(REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING, DEFAULT_REVERSE_RESOLUTION_AFFECT_SERVER);
 
-        // 如果启用了分辨率反转，则交换宽度和高度
+        // 如果启用了分辨率反转，则交换宽度和高度（仅用于本地屏幕方向控制）
         if (config.reverseResolution) {
             int temp = config.width;
             config.width = config.height;
             config.height = temp;
+            
+            // 如果反转分辨率也对服务器生效，则同时交换原始分辨率
+            if (config.reverseResolutionAffectServer) {
+                int tempOriginal = config.originalWidth;
+                config.originalWidth = config.originalHeight;
+                config.originalHeight = tempOriginal;
+            }
         }
 
         // 读取画面位置设置
@@ -745,6 +761,7 @@ public class PreferenceConfiguration {
                     .putBoolean(ENABLE_HDR_PREF_STRING, enableHdr)
                     .putBoolean(ENABLE_PERF_OVERLAY_STRING, enablePerfOverlay)
                     .putBoolean(REVERSE_RESOLUTION_PREF_STRING, reverseResolution)
+                    .putBoolean(REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING, reverseResolutionAffectServer)
                     .putString(SCREEN_POSITION_PREF_STRING, positionString)
                     .putInt(SCREEN_OFFSET_X_PREF_STRING, screenOffsetX)
                     .putInt(SCREEN_OFFSET_Y_PREF_STRING, screenOffsetY)
@@ -760,12 +777,15 @@ public class PreferenceConfiguration {
         PreferenceConfiguration copy = new PreferenceConfiguration();
         copy.width = this.width;
         copy.height = this.height;
+        copy.originalWidth = this.originalWidth;
+        copy.originalHeight = this.originalHeight;
         copy.fps = this.fps;
         copy.bitrate = this.bitrate;
         copy.videoFormat = this.videoFormat;
         copy.enableHdr = this.enableHdr;
         copy.enablePerfOverlay = this.enablePerfOverlay;
         copy.reverseResolution = this.reverseResolution;
+        copy.reverseResolutionAffectServer = this.reverseResolutionAffectServer;
         copy.screenPosition = this.screenPosition;
         copy.screenOffsetX = this.screenOffsetX;
         copy.screenOffsetY = this.screenOffsetY;

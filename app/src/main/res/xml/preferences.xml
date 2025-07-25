@@ -65,6 +65,12 @@
             android:title="反转分辨率"
             android:summary="交换宽度和高度值，用于特殊显示需求"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="checkbox_reverse_resolution_affect_server"
+            android:title="反转分辨率对服务器生效"
+            android:summary="启用后，传给服务器的分辨率也会被反转"
+            android:defaultValue="false"
+            android:dependency="checkbox_reverse_resolution" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="画面位置设置"
