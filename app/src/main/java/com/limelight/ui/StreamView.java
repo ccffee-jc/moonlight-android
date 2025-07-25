@@ -147,6 +147,16 @@ public class StreamView extends SurfaceView {
         applyTransformation();
     }
 
+    /**
+     * 判断当前视频是否在垂直方向上超出了可显示区域
+     * @return true 表示视频高度大于可用高度
+     */
+    public boolean isVerticallyCropped() {
+        int viewHeight = getMeasuredHeight();
+        int availableHeight = screenHeight - keyboardHeight;
+        return viewHeight > availableHeight;
+    }
+
     private void applyTransformation() {
 
         // 获取当前view的宽高
