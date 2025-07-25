@@ -5,7 +5,9 @@ import android.os.Looper;
 import android.view.View;
 
 import com.limelight.Game;
+import com.limelight.binding.input.KeyboardTranslator;
 import com.limelight.nvstream.NvConnection;
+import com.limelight.nvstream.input.KeyboardPacket;
 import com.limelight.nvstream.input.MouseButtonPacket;
 import com.limelight.preferences.PreferenceConfiguration;
 
@@ -274,12 +276,21 @@ public class RelativeTouchContext implements TouchContext {
 
                 if (pointerCount == 2  && !game.leftMouseHoldState) {
                     if (confirmedScroll) {
+                        // 双指纵向滑动：鼠标滚轮滚动（上下滚动）
+                        // 双指横向滑动：Ctrl+滚轮 实现画面缩放
                         if (lastScrollType != 2 && (lastScrollType == 1 || Math.abs(deltaY) - Math.abs(deltaX) > -1)) {
                             lastScrollType = 1;
+                            // 纵向滑动：普通滚轮滚动
                             conn.sendMouseHighResScroll((short)(deltaY * SCROLL_SPEED_FACTOR));
                         } else {
                             lastScrollType = 2;
+                            // 横向滑动：Ctrl+滚轮实现画面缩放
+                            // 先发送 Ctrl 按下
+                            conn.sendKeyboardInput((short)KeyboardTranslator.VK_LCONTROL, KeyboardPacket.KEY_DOWN, (byte)0, (byte)0);
+                            // 发送滚轮事件
                             conn.sendMouseHighResScroll((short)(deltaX * SCROLL_SPEED_FACTOR));
+                            // 再发送 Ctrl 松开
+                            conn.sendKeyboardInput((short)KeyboardTranslator.VK_LCONTROL, KeyboardPacket.KEY_UP, (byte)0, (byte)0);
                         }
                     }
                 } else {
