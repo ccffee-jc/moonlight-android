@@ -180,6 +180,14 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private long lastEscPressTime = 0;
     private boolean hasShownEscHint = false;
 
+    // 鼠标长按和音量键滚动相关变量
+    private long lastVolueEventTime = 0;
+    private long lastVolueUpTime = 0;
+    private static final double SCROLL_SPEED_FACTOR = 1;
+    private static final int MAX_DELAT_TIME = 40;
+    // 鼠标长按模式
+    public boolean leftMouseHoldState = false;
+
     private boolean isHidingOverlays;
     private TextView notificationOverlayView;
     private int requestedNotificationOverlayVisibility = View.GONE;
@@ -546,7 +554,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                 .setResolutionScale(prefConfig.resolutionScale)
                 .setEnableSops(prefConfig.enableSops)
                 .enableLocalAudioPlayback(prefConfig.playHostAudio)
-                .setMaxPacketSize(1392)
+                .setMaxPacketSize(1250)
                 .setRemoteConfiguration(StreamConfiguration.STREAM_CFG_AUTO) // NvConnection will perform LAN and VPN detection
                 .setSupportedVideoFormats(supportedVideoFormats)
                 .setAttachedGamepadMask(gamepadMask)
@@ -574,7 +582,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         for (int i = 0; i < TOUCH_CONTEXT_LENGTH; i++) {
             absoluteTouchContextMap[i] = new AbsoluteTouchContext(conn, i, streamView);
             relativeTouchContextMap[i] = new RelativeTouchContext(conn, i,
-                    streamView, prefConfig);
+                    streamView, prefConfig, this);
         }
         if (!prefConfig.touchscreenTrackpad) {
             touchContextMap = absoluteTouchContextMap;
@@ -1431,6 +1439,41 @@ public class Game extends Activity implements SurfaceHolder.Callback,
             return true;
         }
 
+        if (prefConfig.touchscreenTrackpad) {
+            // 触控板模式，捕获音量键
+
+            long dt = 0;
+            if (event.getDownTime() - event.getEventTime() != 0) {
+                dt = event.getEventTime() - lastVolueEventTime;
+                if (dt > MAX_DELAT_TIME) {
+                    dt = MAX_DELAT_TIME;
+                }
+                lastVolueEventTime = event.getEventTime();
+            }
+
+            if (event.getDownTime() - lastVolueUpTime < 150 && (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP)) {
+                // 长按鼠标触发、取消
+                leftMouseHoldState = !leftMouseHoldState;
+
+                if (leftMouseHoldState) {
+                    conn.sendMouseButtonDown(MouseButtonPacket.BUTTON_LEFT);
+                } else {
+                    conn.sendMouseButtonUp(MouseButtonPacket.BUTTON_LEFT);
+                }
+
+                return true;
+            }
+
+            if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                conn.sendMouseHighResScroll((short) (-dt * SCROLL_SPEED_FACTOR));
+                return true;
+            } else if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) {
+                conn.sendMouseHighResScroll((short) (dt * SCROLL_SPEED_FACTOR));
+                return true;
+            }
+
+        }
+
         boolean handled = false;
 
         if (ControllerHandler.isGameControllerDevice(event.getDevice())) {
@@ -1528,6 +1571,13 @@ public class Game extends Activity implements SurfaceHolder.Callback,
             // Always return true, otherwise the back press will be propagated
             // up to the parent and finish the activity.
             return true;
+        }
+
+        if (prefConfig.touchscreenTrackpad) {
+            // 触控板模式，捕获音量键
+            if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) {
+                lastVolueUpTime = event.getEventTime();
+            }
         }
 
         boolean handled = false;
