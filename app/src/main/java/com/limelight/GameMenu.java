@@ -252,6 +252,7 @@ public class GameMenu {
         options.add(new MenuOption(getString(R.string.game_menu_toggle_host_keyboard), true,
                 () -> sendKeys(new short[]{KeyboardTranslator.VK_LWIN, KeyboardTranslator.VK_LCONTROL,
                         KeyboardTranslator.VK_O})));
+        options.add(new MenuOption(getString(R.string.game_menu_switch_input_method), this::showInputMethodPicker));
         options.add(new MenuOption(game.prefConfig.enableEnhancedTouch ? "切换到经典鼠标模式" : "切换到增强式多点触控",
                 true, this::toggleEnhancedTouch));
 
@@ -276,7 +277,6 @@ public class GameMenu {
         options.add(new MenuOption(getString(R.string.game_menu_toggle_performance_overlay),
                 game::togglePerformanceOverlay));
         options.add(new MenuOption(getString(R.string.game_menu_send_keys), this::showSpecialKeysMenu));
-        options.add(new MenuOption(getString(R.string.game_menu_switch_input_method), this::showInputMethodPicker));
         options.add(new MenuOption(getString(R.string.game_menu_disconnect), true, game::disconnect));
         options.add(new MenuOption("断开并退出串流", true, this::disconnectAndQuit));
         options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
