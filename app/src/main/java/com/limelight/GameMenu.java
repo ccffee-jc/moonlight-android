@@ -165,6 +165,13 @@ public class GameMenu {
         Toast.makeText(game, "Enhanced touch is: " + (game.prefConfig.enableEnhancedTouch ? "ON" : "OFF"), Toast.LENGTH_SHORT).show();
     }
 
+    private void showInputMethodPicker() {
+        InputMethodManager imm = (InputMethodManager) game.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showInputMethodPicker();
+        }
+    }
+
     private void showMenuDialog(String title, MenuOption[] options) {
         AlertDialog.Builder builder = new AlertDialog.Builder(game);
         builder.setTitle(title);
@@ -182,12 +189,6 @@ public class GameMenu {
             new Handler().postDelayed((() -> {
                 sendKeys(new short[]{85, 83});
             }), 200);
-        });
-        customView.findViewById(R.id.btnInputMethod).setOnClickListener((v) -> {
-            InputMethodManager imm = (InputMethodManager) game.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showInputMethodPicker();
-            }
         });
         customView.findViewById(R.id.btnQuit).setOnClickListener((v) -> disconnectAndQuit());
 
@@ -275,6 +276,7 @@ public class GameMenu {
         options.add(new MenuOption(getString(R.string.game_menu_toggle_performance_overlay),
                 game::togglePerformanceOverlay));
         options.add(new MenuOption(getString(R.string.game_menu_send_keys), this::showSpecialKeysMenu));
+        options.add(new MenuOption(getString(R.string.game_menu_switch_input_method), this::showInputMethodPicker));
         options.add(new MenuOption(getString(R.string.game_menu_disconnect), true, game::disconnect));
         options.add(new MenuOption("断开并退出串流", true, this::disconnectAndQuit));
         options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
