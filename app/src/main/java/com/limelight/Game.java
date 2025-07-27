@@ -670,6 +670,11 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private void setPreferredOrientationForCurrentDisplay() {
         Display display = getWindowManager().getDefaultDisplay();
 
+        if (prefConfig.portraitStream) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            return;
+        }
+
         // 如果反转分辨率但不影响服务器，允许任意方向，让内容按比例缩放
         if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
             // 允许任意方向，内容会根据服务器分辨率按比例显示
@@ -2859,6 +2864,18 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
         surfaceCreated = true;
 
+        if (prefConfig.portraitStream) {
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            int screenWidth = metrics.widthPixels;
+            int streamWidth = prefConfig.width;
+            if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+                streamWidth = prefConfig.originalWidth;
+            }
+            float scale = (float) screenWidth / (float) streamWidth;
+            streamView.setScaleFactor(scale);
+        }
+
         // Android will pick the lowest matching refresh rate for a given frame rate value, so we want
         // to report the true FPS value if refresh rate reduction is enabled. We also report the true
         // FPS value if there's no suitable matching refresh rate. In that case, Android could try to
@@ -3189,6 +3206,16 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         ViewGroup.LayoutParams layoutParams = streamView.getLayoutParams();
         if (layoutParams instanceof FrameLayout.LayoutParams) {
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) layoutParams;
+
+            if (prefConfig.portraitStream) {
+                params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                params.topMargin = 0;
+                params.leftMargin = 0;
+                params.rightMargin = 0;
+                params.bottomMargin = 0;
+                streamView.setLayoutParams(params);
+                return;
+            }
             
             // 根据屏幕位置设置重力属性
             switch (config.screenPosition) {

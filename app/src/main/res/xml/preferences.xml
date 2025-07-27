@@ -71,6 +71,11 @@
             android:summary="启用后，传给服务器的分辨率也会被反转"
             android:defaultValue="false"
             android:dependency="checkbox_reverse_resolution" />
+        <CheckBoxPreference
+            android:key="checkbox_portrait_stream"
+            android:title="竖屏串流模式"
+            android:summary="以竖屏方式播放串流画面，画面位于屏幕顶部"
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="画面位置设置"

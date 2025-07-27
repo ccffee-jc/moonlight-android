@@ -164,6 +164,8 @@ public class PreferenceConfiguration {
     private static final boolean DEFAULT_REVERSE_RESOLUTION = false;
     private static final String REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING = "checkbox_reverse_resolution_affect_server";
     private static final boolean DEFAULT_REVERSE_RESOLUTION_AFFECT_SERVER = false;
+    private static final String PORTRAIT_STREAM_PREF_STRING = "checkbox_portrait_stream";
+    private static final boolean DEFAULT_PORTRAIT_STREAM = false;
 
     // 画面位置常量
     private static final String SCREEN_POSITION_PREF_STRING = "list_screen_position";
@@ -241,6 +243,7 @@ public class PreferenceConfiguration {
     public ScreenPosition screenPosition;
     public int screenOffsetX;
     public int screenOffsetY;
+    public boolean portraitStream;
 
     public static boolean isNativeResolution(int width, int height) {
         // 使用集合检查是否为原生分辨率
@@ -660,6 +663,7 @@ public class PreferenceConfiguration {
 
         config.reverseResolution = prefs.getBoolean(REVERSE_RESOLUTION_PREF_STRING, DEFAULT_REVERSE_RESOLUTION);
         config.reverseResolutionAffectServer = prefs.getBoolean(REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING, DEFAULT_REVERSE_RESOLUTION_AFFECT_SERVER);
+        config.portraitStream = prefs.getBoolean(PORTRAIT_STREAM_PREF_STRING, DEFAULT_PORTRAIT_STREAM);
 
         // 如果启用了分辨率反转，则交换宽度和高度（仅用于本地屏幕方向控制）
         if (config.reverseResolution) {
@@ -765,6 +769,7 @@ public class PreferenceConfiguration {
                     .putString(SCREEN_POSITION_PREF_STRING, positionString)
                     .putInt(SCREEN_OFFSET_X_PREF_STRING, screenOffsetX)
                     .putInt(SCREEN_OFFSET_Y_PREF_STRING, screenOffsetY)
+                    .putBoolean(PORTRAIT_STREAM_PREF_STRING, portraitStream)
                     .apply();
             return true;
         } catch (Exception e) {
@@ -789,6 +794,7 @@ public class PreferenceConfiguration {
         copy.screenPosition = this.screenPosition;
         copy.screenOffsetX = this.screenOffsetX;
         copy.screenOffsetY = this.screenOffsetY;
+        copy.portraitStream = this.portraitStream;
         return copy;
     }
 }
