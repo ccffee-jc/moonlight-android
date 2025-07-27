@@ -138,6 +138,11 @@ public class StreamView extends SurfaceView {
         translateX = Math.max(-width / 2.0f, Math.min(width / 2.0f, translateX));
         translateY = Math.max(-height / 2.0f, Math.min(height / 2.0f, translateY));
 
+        // 当画面高度不足以占满可用区域时，保持居中不允许垂直位移
+        if (height <= screenHeight - keyboardHeight) {
+            translateY = 0;
+        }
+
         applyTransformation();
     }
 
