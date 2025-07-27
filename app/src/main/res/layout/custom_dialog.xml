@@ -46,6 +46,13 @@
             android:text="睡眠" />
 
         <Button
+            android:id="@+id/btnInputMethod"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="输入法" />
+
+        <Button
             android:id="@+id/btnQuit"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"

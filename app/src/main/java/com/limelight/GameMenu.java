@@ -5,10 +5,12 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.content.Context;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -180,6 +182,12 @@ public class GameMenu {
             new Handler().postDelayed((() -> {
                 sendKeys(new short[]{85, 83});
             }), 200);
+        });
+        customView.findViewById(R.id.btnInputMethod).setOnClickListener((v) -> {
+            InputMethodManager imm = (InputMethodManager) game.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showInputMethodPicker();
+            }
         });
         customView.findViewById(R.id.btnQuit).setOnClickListener((v) -> disconnectAndQuit());
 
