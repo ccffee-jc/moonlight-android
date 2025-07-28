@@ -315,6 +315,19 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         streamView.setOnGenericMotionListener(this);
         streamView.setOnKeyListener(this);
         streamView.setInputCallbacks(this);
+        
+        // 设置缩放变化监听器，自动更新TouchContext的缩放比率
+        streamView.setScaleChangeListener(new StreamView.ScaleChangeListener() {
+            @Override
+            public void onScaleChanged(float newScale) {
+                // 更新所有RelativeTouchContext的缩放比率
+                for (TouchContext touchContext : relativeTouchContextMap) {
+                    if (touchContext instanceof RelativeTouchContext) {
+                        ((RelativeTouchContext) touchContext).updateCurrentScale(newScale);
+                    }
+                }
+            }
+        });
 
         // Listen for touch events on the background touch view to enable trackpad mode
         // to work on areas outside of the StreamView itself. We use a separate View
@@ -2864,17 +2877,23 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
         surfaceCreated = true;
 
-        if (prefConfig.portraitStream) {
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int screenWidth = metrics.widthPixels;
-            int streamWidth = prefConfig.width;
-            if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
-                streamWidth = prefConfig.originalWidth;
-            }
-            float scale = (float) screenWidth / (float) streamWidth;
-            streamView.setScaleFactor(scale);
-        }
+       if (prefConfig.portraitStream) {
+           DisplayMetrics metrics = new DisplayMetrics();
+           getWindowManager().getDefaultDisplay().getMetrics(metrics);
+           int screenWidth = metrics.widthPixels;
+           int streamWidth = prefConfig.width;
+           if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+               streamWidth = prefConfig.originalWidth;
+           }
+           
+           // 使用用户配置的竖屏缩放比率
+           float baseScale = (float) screenWidth / (float) streamWidth;
+           float userScaleRatio = prefConfig.portraitStreamScale / 100.0f;
+           float finalScale = baseScale * userScaleRatio;
+           
+           streamView.setScaleFactor(finalScale);
+           // TouchContext的缩放比率会通过监听器自动更新
+       }
 
         // Android will pick the lowest matching refresh rate for a given frame rate value, so we want
         // to report the true FPS value if refresh rate reduction is enabled. We also report the true

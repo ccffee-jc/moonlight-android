@@ -107,12 +107,25 @@ public class RelativeTouchContext implements TouchContext {
         this.targetView = view;
         this.prefConfig = prefConfig;
         this.handler = new Handler(Looper.getMainLooper());
+        
+        // 初始化当前缩放比率为StreamView的实际缩放比率
+        if (view instanceof StreamView) {
+            this.curScale = ((StreamView) view).getScaleFactor();
+        }
     }
 
     @Override
     public int getActionIndex()
     {
         return actionIndex;
+    }
+
+    /**
+     * 更新当前缩放比率
+     * @param scale 新的缩放比率
+     */
+    public void updateCurrentScale(float scale) {
+        this.curScale = scale;
     }
 
     private boolean isWithinTapBounds(int touchX, int touchY)

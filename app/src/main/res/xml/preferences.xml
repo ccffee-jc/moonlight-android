@@ -76,6 +76,18 @@
             android:title="竖屏串流模式"
             android:summary="以竖屏方式播放串流画面，画面位于屏幕顶部"
             android:defaultValue="false" />
+        <com.limelight.preferences.SeekBarPreference
+            android:key="seekbar_portrait_stream_scale"
+            android:title="竖屏模式初始缩放比率"
+            android:summary="设置竖屏串流模式下的初始界面缩放比率"
+            android:dialogMessage="调整竖屏串流模式下的初始界面缩放比率"
+            seekbar:min="50"
+            android:max="1000"
+            android:defaultValue="100"
+            seekbar:step="5"
+            seekbar:keyStep="10"
+            android:text="%"
+            android:dependency="checkbox_portrait_stream" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="画面位置设置"
