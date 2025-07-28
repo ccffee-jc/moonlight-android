@@ -170,6 +170,8 @@ public class PreferenceConfiguration {
     private static final boolean DEFAULT_PORTRAIT_STREAM = false;
     private static final String PORTRAIT_STREAM_SCALE_PREF_STRING = "seekbar_portrait_stream_scale";
     private static final int DEFAULT_PORTRAIT_STREAM_SCALE = 100;
+    private static final String PORTRAIT_AUTO_KEYBOARD_PREF_STRING = "checkbox_portrait_auto_keyboard";
+    private static final boolean DEFAULT_PORTRAIT_AUTO_KEYBOARD = true;
 
     // 画面位置常量
     private static final String SCREEN_POSITION_PREF_STRING = "list_screen_position";
@@ -250,6 +252,7 @@ public class PreferenceConfiguration {
     public int screenOffsetY;
     public boolean portraitStream;
     public int portraitStreamScale;
+    public boolean portraitAutoKeyboard;
 
     public static boolean isNativeResolution(int width, int height) {
         // 使用集合检查是否为原生分辨率
@@ -672,6 +675,7 @@ public class PreferenceConfiguration {
         config.reverseResolutionAffectServer = prefs.getBoolean(REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING, DEFAULT_REVERSE_RESOLUTION_AFFECT_SERVER);
         config.portraitStream = prefs.getBoolean(PORTRAIT_STREAM_PREF_STRING, DEFAULT_PORTRAIT_STREAM);
         config.portraitStreamScale = prefs.getInt(PORTRAIT_STREAM_SCALE_PREF_STRING, DEFAULT_PORTRAIT_STREAM_SCALE);
+        config.portraitAutoKeyboard = prefs.getBoolean(PORTRAIT_AUTO_KEYBOARD_PREF_STRING, DEFAULT_PORTRAIT_AUTO_KEYBOARD);
 
         // 如果启用了分辨率反转，则交换宽度和高度（仅用于本地屏幕方向控制）
         if (config.reverseResolution) {
@@ -780,6 +784,7 @@ public class PreferenceConfiguration {
                     .putInt(SCREEN_OFFSET_Y_PREF_STRING, screenOffsetY)
                     .putBoolean(PORTRAIT_STREAM_PREF_STRING, portraitStream)
                     .putInt(PORTRAIT_STREAM_SCALE_PREF_STRING, portraitStreamScale)
+                    .putBoolean(PORTRAIT_AUTO_KEYBOARD_PREF_STRING, portraitAutoKeyboard)
                     .apply();
             return true;
         } catch (Exception e) {
@@ -806,6 +811,7 @@ public class PreferenceConfiguration {
         copy.screenOffsetY = this.screenOffsetY;
         copy.portraitStream = this.portraitStream;
         copy.portraitStreamScale = this.portraitStreamScale;
+        copy.portraitAutoKeyboard = this.portraitAutoKeyboard;
         return copy;
     }
 }

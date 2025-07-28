@@ -2783,6 +2783,18 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                 // Update GameManager state to indicate we're in game
                 UiHelper.notifyStreamConnected(Game.this);
 
+                // 如果启用了竖屏模式并且设置了自动唤起输入法，则自动唤起输入法
+                if (prefConfig.portraitStream && prefConfig.portraitAutoKeyboard) {
+                    // 延迟一点时间确保串流已完全建立
+                    Handler keyboardHandler = new Handler();
+                    keyboardHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toggleKeyboard();
+                        }
+                    }, 1000); // 1秒后自动唤起输入法
+                }
+
                 hideSystemUi(1000);
             }
         });
