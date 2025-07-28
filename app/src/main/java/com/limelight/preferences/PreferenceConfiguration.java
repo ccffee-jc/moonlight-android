@@ -97,6 +97,7 @@ public class PreferenceConfiguration {
     static final String EXPORT_CONFIG_STRING = "export_super_config";
     static final String MERGE_CONFIG_STRING = "merge_super_config";
     static final String ABOUT_AUTHOR = "about_author";
+    private static final String PREFER_GAME_MENU_PREF_STRING = "checkbox_prefer_game_menu";
 
     static final String DEFAULT_RESOLUTION = "1920x1080";
     static final String DEFAULT_FPS = "60";
@@ -127,6 +128,7 @@ public class PreferenceConfiguration {
     private static final int DEFAULT_VIBRATE_FALLBACK_STRENGTH = 100;
     private static final boolean DEFAULT_FLIP_FACE_BUTTONS = false;
     private static final boolean DEFAULT_TOUCHSCREEN_TRACKPAD = true;
+    private static final boolean DEFAULT_PREFER_GAME_MENU = false;
     private static final String DEFAULT_AUDIO_CONFIG = "2"; // Stereo
     private static final boolean DEFAULT_LATENCY_TOAST = false;
     private static final String DEFAULT_FRAME_PACING = "latency";
@@ -241,6 +243,7 @@ public class PreferenceConfiguration {
     public boolean gamepadMotionSensorsFallbackToDevice;
     public boolean reverseResolution;
     public boolean reverseResolutionAffectServer;
+    public boolean preferGameMenu;
 
     public ScreenPosition screenPosition;
     public int screenOffsetX;
@@ -663,6 +666,7 @@ public class PreferenceConfiguration {
         config.gamepadMotionSensors = prefs.getBoolean(GAMEPAD_MOTION_SENSORS_PREF_STRING, DEFAULT_GAMEPAD_MOTION_SENSORS);
         config.gamepadMotionSensorsFallbackToDevice = prefs.getBoolean(GAMEPAD_MOTION_FALLBACK_PREF_STRING, DEFAULT_GAMEPAD_MOTION_FALLBACK);
         config.enableSimplifyPerfOverlay = false;
+        config.preferGameMenu = prefs.getBoolean(PREFER_GAME_MENU_PREF_STRING, DEFAULT_PREFER_GAME_MENU);
 
         config.reverseResolution = prefs.getBoolean(REVERSE_RESOLUTION_PREF_STRING, DEFAULT_REVERSE_RESOLUTION);
         config.reverseResolutionAffectServer = prefs.getBoolean(REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING, DEFAULT_REVERSE_RESOLUTION_AFFECT_SERVER);
@@ -770,6 +774,7 @@ public class PreferenceConfiguration {
                     .putBoolean(ENABLE_PERF_OVERLAY_STRING, enablePerfOverlay)
                     .putBoolean(REVERSE_RESOLUTION_PREF_STRING, reverseResolution)
                     .putBoolean(REVERSE_RESOLUTION_AFFECT_SERVER_PREF_STRING, reverseResolutionAffectServer)
+                    .putBoolean(PREFER_GAME_MENU_PREF_STRING, preferGameMenu)
                     .putString(SCREEN_POSITION_PREF_STRING, positionString)
                     .putInt(SCREEN_OFFSET_X_PREF_STRING, screenOffsetX)
                     .putInt(SCREEN_OFFSET_Y_PREF_STRING, screenOffsetY)

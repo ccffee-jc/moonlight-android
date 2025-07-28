@@ -347,6 +347,12 @@
             android:key="checkbox_show_onscreen_keyboard"
             android:summary="串流中自定义按键和一些设置，并将这些保存到自定义可快速切换的配置中"
             android:title="王冠的超级功能" />
+        <CheckBoxPreference
+            android:key="checkbox_prefer_game_menu"
+            android:title="@string/title_checkbox_prefer_game_menu"
+            android:summary="@string/summary_checkbox_prefer_game_menu"
+            android:defaultValue="false"
+            android:dependency="checkbox_show_onscreen_keyboard" />
         <ListPreference
             android:key="export_super_config"
             android:title="导出配置"
