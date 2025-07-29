@@ -71,6 +71,23 @@
             android:summary="启用后，传给服务器的分辨率也会被反转"
             android:defaultValue="false"
             android:dependency="checkbox_reverse_resolution" />
+        <CheckBoxPreference
+            android:key="checkbox_portrait_stream"
+            android:title="竖屏串流模式"
+            android:summary="以竖屏方式播放串流画面，画面位于屏幕顶部"
+            android:defaultValue="false" />
+        <com.limelight.preferences.SeekBarPreference
+            android:key="seekbar_portrait_stream_scale"
+            android:title="竖屏模式初始缩放比率"
+            android:summary="设置竖屏串流模式下的初始界面缩放比率"
+            android:dialogMessage="调整竖屏串流模式下的初始界面缩放比率"
+            seekbar:min="50"
+            android:max="1000"
+            android:defaultValue="100"
+            seekbar:step="5"
+            seekbar:keyStep="10"
+            android:text="%"
+            android:dependency="checkbox_portrait_stream" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="画面位置设置"
@@ -330,6 +347,12 @@
             android:key="checkbox_show_onscreen_keyboard"
             android:summary="串流中自定义按键和一些设置，并将这些保存到自定义可快速切换的配置中"
             android:title="王冠的超级功能" />
+        <CheckBoxPreference
+            android:key="checkbox_prefer_game_menu"
+            android:title="@string/title_checkbox_prefer_game_menu"
+            android:summary="@string/summary_checkbox_prefer_game_menu"
+            android:defaultValue="false"
+            android:dependency="checkbox_show_onscreen_keyboard" />
         <ListPreference
             android:key="export_super_config"
             android:title="导出配置"

@@ -342,4 +342,8 @@
     <string name="summary_analog_scrolling">在鼠标模式下选择用哪个摇杆控制鼠标移动</string>
     <string name="summary_seekbar_vibrate_fallback_strength">增强或减弱设备的震动强度</string>
     <string name="analogscroll_none">默认 (两个摇杆都控制鼠标)</string>
+    
+    <!-- 优先显示游戏菜单选项 -->
+    <string name="title_checkbox_prefer_game_menu">优先显示游戏菜单</string>
+    <string name="summary_checkbox_prefer_game_menu">启用后，返回按钮将显示传统游戏菜单而非王冠超级功能菜单</string>
 </resources>

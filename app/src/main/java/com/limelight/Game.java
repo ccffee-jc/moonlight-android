@@ -315,6 +315,19 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         streamView.setOnGenericMotionListener(this);
         streamView.setOnKeyListener(this);
         streamView.setInputCallbacks(this);
+        
+        // 设置缩放变化监听器，自动更新TouchContext的缩放比率
+        streamView.setScaleChangeListener(new StreamView.ScaleChangeListener() {
+            @Override
+            public void onScaleChanged(float newScale) {
+                // 更新所有RelativeTouchContext的缩放比率
+                for (TouchContext touchContext : relativeTouchContextMap) {
+                    if (touchContext instanceof RelativeTouchContext) {
+                        ((RelativeTouchContext) touchContext).updateCurrentScale(newScale);
+                    }
+                }
+            }
+        });
 
         // Listen for touch events on the background touch view to enable trackpad mode
         // to work on areas outside of the StreamView itself. We use a separate View
@@ -669,6 +682,11 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     private void setPreferredOrientationForCurrentDisplay() {
         Display display = getWindowManager().getDefaultDisplay();
+
+        if (prefConfig.portraitStream) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            return;
+        }
 
         // 如果反转分辨率但不影响服务器，允许任意方向，让内容按比例缩放
         if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
@@ -2765,6 +2783,18 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                 // Update GameManager state to indicate we're in game
                 UiHelper.notifyStreamConnected(Game.this);
 
+                // 如果启用了竖屏模式并且设置了自动唤起输入法，则自动唤起输入法
+                if (prefConfig.portraitStream && prefConfig.portraitAutoKeyboard) {
+                    // 延迟一点时间确保串流已完全建立
+                    Handler keyboardHandler = new Handler();
+                    keyboardHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toggleKeyboard();
+                        }
+                    }, 1000); // 1秒后自动唤起输入法
+                }
+
                 hideSystemUi(1000);
             }
         });
@@ -2858,6 +2888,24 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         float desiredFrameRate;
 
         surfaceCreated = true;
+
+       if (prefConfig.portraitStream) {
+           DisplayMetrics metrics = new DisplayMetrics();
+           getWindowManager().getDefaultDisplay().getMetrics(metrics);
+           int screenWidth = metrics.widthPixels;
+           int streamWidth = prefConfig.width;
+           if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+               streamWidth = prefConfig.originalWidth;
+           }
+           
+           // 使用用户配置的竖屏缩放比率
+           float baseScale = (float) screenWidth / (float) streamWidth;
+           float userScaleRatio = prefConfig.portraitStreamScale / 100.0f;
+           float finalScale = baseScale * userScaleRatio;
+           
+           streamView.setScaleFactor(finalScale);
+           // TouchContext的缩放比率会通过监听器自动更新
+       }
 
         // Android will pick the lowest matching refresh rate for a given frame rate value, so we want
         // to report the true FPS value if refresh rate reduction is enabled. We also report the true
@@ -3082,7 +3130,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     @Override
     public void showGameMenu(GameInputDevice device) {
-        if (controllerManager != null){
+        if (controllerManager != null && !prefConfig.preferGameMenu){
             controllerManager.getSuperPagesController().returnOperation();
         } else {
             new GameMenu(this, app, conn, device);
@@ -3189,6 +3237,16 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         ViewGroup.LayoutParams layoutParams = streamView.getLayoutParams();
         if (layoutParams instanceof FrameLayout.LayoutParams) {
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) layoutParams;
+
+            if (prefConfig.portraitStream) {
+                params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                params.topMargin = 0;
+                params.leftMargin = 0;
+                params.rightMargin = 0;
+                params.bottomMargin = 0;
+                streamView.setLayoutParams(params);
+                return;
+            }
             
             // 根据屏幕位置设置重力属性
             switch (config.screenPosition) {

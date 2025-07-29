@@ -11,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.view.inputmethod.InputMethodManager;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.provider.Settings;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -58,6 +62,8 @@ public class GameMenu {
     private final NvApp app;
     private final NvConnection conn;
     private final GameInputDevice device;
+    private String currentInputMethod;
+    private BroadcastReceiver inputMethodChangeReceiver;
 
     public GameMenu(Game game, NvApp app, NvConnection conn, GameInputDevice device) {
         this.game = game;
@@ -168,7 +174,59 @@ public class GameMenu {
     private void showInputMethodPicker() {
         InputMethodManager imm = (InputMethodManager) game.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
+            // 获取当前输入法
+            currentInputMethod = android.provider.Settings.Secure.getString(
+                game.getContentResolver(), 
+                android.provider.Settings.Secure.DEFAULT_INPUT_METHOD);
+            
+            // 注册输入法变化监听器
+            registerInputMethodChangeListener();
+            
+            // 显示输入法选择器
             imm.showInputMethodPicker();
+        }
+    }
+    
+    private void registerInputMethodChangeListener() {
+        if (inputMethodChangeReceiver != null) {
+            game.unregisterReceiver(inputMethodChangeReceiver);
+        }
+        
+        inputMethodChangeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // 检查输入法是否真的发生了变化
+                String newInputMethod = android.provider.Settings.Secure.getString(
+                    game.getContentResolver(), 
+                    android.provider.Settings.Secure.DEFAULT_INPUT_METHOD);
+                
+                if (newInputMethod != null && !newInputMethod.equals(currentInputMethod)) {
+                    currentInputMethod = newInputMethod;
+                    
+                    // 延迟一小段时间后自动弹出输入法，确保输入法切换完成
+                    new Handler().postDelayed(() -> {
+                        game.toggleKeyboard();
+                        // 使用完后取消注册监听器
+                        unregisterInputMethodChangeListener();
+                    }, 500);
+                }
+            }
+        };
+        
+        // 注册监听器来接收输入法变化广播
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_INPUT_METHOD_CHANGED);
+        game.registerReceiver(inputMethodChangeReceiver, filter);
+    }
+    
+    private void unregisterInputMethodChangeListener() {
+        if (inputMethodChangeReceiver != null) {
+            try {
+                game.unregisterReceiver(inputMethodChangeReceiver);
+            } catch (IllegalArgumentException e) {
+                // 忽略重复取消注册的异常
+            }
+            inputMethodChangeReceiver = null;
         }
     }
 
@@ -282,5 +340,12 @@ public class GameMenu {
         options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
 
         showMenuDialog(GAME_MENU_TITLE, options.toArray(new MenuOption[0]));
+    }
+    
+    /**
+     * 清理资源，确保广播接收器被正确注销
+     */
+    public void cleanup() {
+        unregisterInputMethodChangeListener();
     }
 }

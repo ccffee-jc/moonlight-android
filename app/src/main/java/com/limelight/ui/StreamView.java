@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 
 public class StreamView extends SurfaceView {
     private double desiredAspectRatio;
@@ -51,13 +53,31 @@ public class StreamView extends SurfaceView {
     }
 
     private void init(Context context) {
-        // 获取屏幕尺寸
+        // 使用ViewTreeObserver在布局完成后获取实际可用的容器尺寸
         ViewTreeObserver vto = getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                screenWidth = getWidth();
-                screenHeight = getHeight();
+                // 获取父容器的尺寸作为可用屏幕尺寸
+                android.view.ViewGroup parent = (android.view.ViewGroup) getParent();
+                if (parent != null) {
+                    screenWidth = parent.getWidth();
+                    screenHeight = parent.getHeight();
+                } else {
+                    // 备用方案：获取根视图尺寸
+                    android.view.View rootView = getRootView();
+                    if (rootView != null) {
+                        screenWidth = rootView.getWidth();
+                        screenHeight = rootView.getHeight();
+                    } else {
+                        // 最后备用方案：使用DisplayMetrics
+                        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+                        screenWidth = displayMetrics.widthPixels;
+                        screenHeight = displayMetrics.heightPixels;
+                    }
+                }
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -121,6 +141,29 @@ public class StreamView extends SurfaceView {
         requestLayout();
 
         applyTransformation();
+        
+        // 通知监听器缩放变化
+        if (scaleChangeListener != null) {
+            scaleChangeListener.onScaleChanged(scale);
+        }
+    }
+
+    /**
+     * 获取当前缩放比例
+     * @return 当前缩放因子
+     */
+    public float getScaleFactor() {
+        return this.currentScale;
+    }
+
+    public interface ScaleChangeListener {
+        void onScaleChanged(float newScale);
+    }
+
+    private ScaleChangeListener scaleChangeListener;
+
+    public void setScaleChangeListener(ScaleChangeListener listener) {
+        this.scaleChangeListener = listener;
     }
 
     /**
@@ -157,14 +200,12 @@ public class StreamView extends SurfaceView {
         float valuableScreenHeight = screenHeight - keyboardHeight;
 
         float targetTranslateX = translateX;
-        float targetTranslateY = translateY + keyboardHeight / 2.0f;
+        float targetTranslateY = translateY; // 先保持原有的 translateY，不要预先加偏移
 
         // 限制x方向
         if (viewWidth <= screenWidth) {
-            // 计算可移动的最大范围
-            float maxX = (screenWidth - viewWidth) / 2.0f;
-            // 限制在屏幕范围内
-            targetTranslateX = Math.min(Math.max(targetTranslateX, -maxX), maxX);
+            // 当视图宽度小于等于屏幕宽度时，画面应该居中，不允许移动
+            targetTranslateX = 0;
         } else
         {
             // 计算可移动的最大范围
@@ -175,23 +216,82 @@ public class StreamView extends SurfaceView {
 
         // 限制y方向
         if (viewHeight <= valuableScreenHeight) {
-            float tempMaxY = (valuableScreenHeight - viewHeight) / 2.0f;
-            float maxY = keyboardHeight / 2.0f + tempMaxY;
-            float minY = keyboardHeight / 2.0f - tempMaxY;
-
-            targetTranslateY = Math.min(Math.max(targetTranslateY, minY), maxY);
+            // 当视图高度小于等于可用屏幕高度时，需要考虑用户的位置设置
+            // 获取当前的布局参数来确定用户设置的位置
+            android.view.ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            if (layoutParams instanceof android.widget.FrameLayout.LayoutParams) {
+                android.widget.FrameLayout.LayoutParams frameParams = (android.widget.FrameLayout.LayoutParams) layoutParams;
+                int gravity = frameParams.gravity;
+                
+                // 检查是否设置为顶部对齐
+                if ((gravity & android.view.Gravity.TOP) == android.view.Gravity.TOP) {
+                    // 顶部对齐：考虑软键盘高度，但保持在顶部
+                    if (keyboardHeight > 0) {
+                        // 有软键盘时，稍微向下偏移以避免被遮挡
+                        targetTranslateY = Math.min(keyboardHeight / 4.0f, (valuableScreenHeight - viewHeight) / 2.0f);
+                    } else {
+                        // 无软键盘时，保持顶部对齐
+                        targetTranslateY = 0;
+                    }
+                } else if ((gravity & android.view.Gravity.BOTTOM) == android.view.Gravity.BOTTOM) {
+                    // 底部对齐：避免被软键盘遮挡
+                    targetTranslateY = -keyboardHeight / 2.0f;
+                } else {
+                    // 居中或其他对齐方式：在可用区域内居中显示
+                    float centerOffsetY = (valuableScreenHeight - viewHeight) / 2.0f;
+                    targetTranslateY = centerOffsetY;
+                }
+            } else {
+                // 默认情况：在可用区域内居中显示
+                float centerOffsetY = (valuableScreenHeight - viewHeight) / 2.0f;
+                targetTranslateY = centerOffsetY;
+            }
         } else {
-            float tempMaxY = (viewHeight - valuableScreenHeight) / 2.0f;
-            float maxY = keyboardHeight / 2.0f + tempMaxY;
-            float minY = keyboardHeight / 2.0f - tempMaxY;
-
+            // 画面大于可用高度时，允许移动但限制范围
+            // 保持与小画面情况下相同的基准计算方式
+            
+            // 获取布局参数，确保与小画面时的逻辑一致
+            android.view.ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            float baseTranslateY = 0; // 默认基准位置
+            
+            if (layoutParams instanceof android.widget.FrameLayout.LayoutParams) {
+                android.widget.FrameLayout.LayoutParams frameParams = (android.widget.FrameLayout.LayoutParams) layoutParams;
+                int gravity = frameParams.gravity;
+                
+                if ((gravity & android.view.Gravity.TOP) == android.view.Gravity.TOP) {
+                    // 顶部对齐：基准位置为顶部
+                    baseTranslateY = keyboardHeight > 0 ? Math.min(keyboardHeight / 4.0f, (valuableScreenHeight - viewHeight) / 2.0f) : 0;
+                } else if ((gravity & android.view.Gravity.BOTTOM) == android.view.Gravity.BOTTOM) {
+                    // 底部对齐：基准位置考虑键盘
+                    baseTranslateY = -keyboardHeight / 2.0f;
+                } else {
+                    // 居中：基准位置为可用区域中央
+                    baseTranslateY = (valuableScreenHeight - viewHeight) / 2.0f;
+                }
+            } else {
+                // 默认：居中
+                baseTranslateY = (valuableScreenHeight - viewHeight) / 2.0f;
+            }
+            
+            // 计算允许的移动范围
+            float maxMovement = (viewHeight - valuableScreenHeight) / 2.0f;
+            float maxY = baseTranslateY + maxMovement;
+            float minY = baseTranslateY - maxMovement;
+            
+            // 如果当前 translateY 在合理范围内，保持它；否则设置为基准位置
+            if (targetTranslateY < minY || targetTranslateY > maxY) {
+                targetTranslateY = baseTranslateY;
+            }
+            
+            // 限制在允许的范围内
             targetTranslateY = Math.min(Math.max(targetTranslateY, minY), maxY);
         }
 
 
         // 应用变换
         this.setTranslationX(targetTranslateX);
-        this.setTranslationY(targetTranslateY - keyboardHeight);
+        // 统一的 Y 轴变换逻辑，避免跳跃
+        this.setTranslationY(targetTranslateY);
     }
 
     public interface InputCallbacks {
