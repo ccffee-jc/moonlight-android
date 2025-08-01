@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
@@ -188,6 +189,20 @@ public class StreamView extends SurfaceView {
     public void setKeyboardHeight(int height) {
         this.keyboardHeight = height;
         applyTransformation();
+    }
+
+    /**
+     * 判断当前视频是否在垂直方向上超出了可显示区域
+     * @return true 表示视频高度大于可用高度
+     */
+    public boolean isVerticallyCropped() {
+        // Determine if the stream exceeds the available height of the root view
+        // so that touch handling can behave differently when the image is
+        // cropped by zooming or reduced space (e.g. keyboard shown).
+        View root = getRootView();
+        int rootHeight = root != null ? root.getHeight() : screenHeight;
+        int availableHeight = rootHeight - keyboardHeight;
+        return getHeight() > availableHeight;
     }
 
     private void applyTransformation() {

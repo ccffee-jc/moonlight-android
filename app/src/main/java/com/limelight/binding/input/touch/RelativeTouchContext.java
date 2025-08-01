@@ -3,6 +3,7 @@ package com.limelight.binding.input.touch;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.Surface;
 
 import com.limelight.Game;
 import com.limelight.nvstream.NvConnection;
@@ -317,6 +318,21 @@ public class RelativeTouchContext implements TouchContext {
                         short mouseY = (short)((float) streamView.getHeight() / 2 - streamView.translateY);
                         conn.sendMousePosition(mouseX, mouseY, (short)targetView.getWidth(), (short)targetView.getHeight());
 
+                    }
+
+                    // When reverse resolution is enabled locally but not on the server,
+                    // the video is rotated with black bars above/below in portrait mode.
+                    // Flip the vertical drag so the picture follows the finger, but only
+                    // when the picture fits in the available space. If the image is zoomed
+                    // in or the keyboard reduces the viewable area such that the stream is
+                    // cropped, keep the original drag direction.
+                    if (prefConfig.reverseResolution && !prefConfig.reverseResolutionAffectServer) {
+                        int rotation = game.getWindowManager().getDefaultDisplay().getRotation();
+                        StreamView sv = (StreamView) targetView;
+                        if ((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
+                                && !sv.isVerticallyCropped()) {
+                            deltaY = -deltaY;
+                        }
                     }
 
                     ((StreamView)targetView).setTranslationOffset(-deltaX * this.curScale, -deltaY * this.curScale);
